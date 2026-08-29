@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="南疆7日游攻略入口">
+  <title>南疆七日｜选择你的路线</title>
+  <style>
+    :root {
+      --ink: #20251f;
+      --muted: #667066;
+      --paper: #f5f2e9;
+      --white: #fffef9;
+      --line: #d7d8cc;
+      --red: #b6412f;
+      --green: #315c4c;
+      --gold: #c99132;
+      --shadow: 0 18px 48px rgba(34, 40, 31, .13);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        linear-gradient(rgba(49, 92, 76, .04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(49, 92, 76, .04) 1px, transparent 1px),
+        var(--paper);
+      background-size: 32px 32px;
+      font-family: "Noto Serif SC", "Songti SC", "Microsoft YaHei", serif;
+    }
+
+    main {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: clamp(64px, 10vh, 120px) 0 72px;
+    }
+
+    .kicker {
+      margin: 0 0 12px;
+      color: var(--red);
+      font: 800 14px/1.4 "Microsoft YaHei", sans-serif;
+    }
+
+    h1 {
+      max-width: 800px;
+      margin: 0;
+      font-size: clamp(46px, 8vw, 88px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .intro {
+      max-width: 660px;
+      margin: 22px 0 48px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .routes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .route {
+      position: relative;
+      display: flex;
+      min-height: 390px;
+      overflow: hidden;
+      color: white;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .route::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background-position: center;
+      background-size: cover;
+      transition: transform .45s ease;
+    }
+
+    .route::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(180deg, rgba(13, 24, 21, .08), rgba(13, 24, 21, .9));
+    }
+
+    .route:hover::before,
+    .route:focus-visible::before { transform: scale(1.035); }
+
+    .route:focus-visible { outline: 4px solid var(--gold); outline-offset: 4px; }
+
+    .route-original::before {
+      background-image: url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=84");
+    }
+
+    .route-v2::before {
+      background-image: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=84");
+    }
+
+    .route-content {
+      align-self: end;
+      width: 100%;
+      padding: 30px;
+    }
+
+    .version {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 5px 9px;
+      border: 1px solid rgba(255, 255, 255, .65);
+      font: 700 12px "Microsoft YaHei", sans-serif;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .route p { margin: 12px 0 0; line-height: 1.7; }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+      font: 700 13px "Microsoft YaHei", sans-serif;
+    }
+
+    .meta span {
+      padding: 5px 8px;
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .3);
+    }
+
+    .open {
+      display: inline-block;
+      margin-top: 22px;
+      color: #fff1c8;
+      font: 800 14px "Microsoft YaHei", sans-serif;
+    }
+
+    footer {
+      margin-top: 34px;
+      color: var(--muted);
+      font: 14px/1.7 "Microsoft YaHei", sans-serif;
+    }
+
+    @media (max-width: 720px) {
+      main { width: min(100% - 28px, 1080px); padding-top: 56px; }
+      .intro { margin-bottom: 34px; }
+      .routes { grid-template-columns: 1fr; }
+      .route { min-height: 360px; }
+      .route-content { padding: 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .route::before { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="kicker">南疆 · 7天6晚 · 自驾路书</p>
+    <h1>选择你的南疆路线</h1>
+    <p class="intro">两份攻略，共享同一片帕米尔。原版更深入边境山河，调整版减少赶路并加入莎车人文。</p>
+
+    <div class="routes">
+      <a class="route route-original" href="南疆7日游攻略.html">
+        <div class="route-content">
+          <span class="version">原版 · 帕米尔深度</span>
+          <h2>向帕米尔去</h2>
+          <p>红其拉甫、盘龙古道、班迪尔蓝湖与木吉火山，适合更看重高原风景和边境体验的人。</p>
+          <div class="meta"><span>约1450–1650km</span><span>塔县深度</span><span>驾驶强度高</span></div>
+          <span class="open">打开攻略 →</span>
+        </div>
+      </a>
+
+      <a class="route route-v2" href="南疆7日游攻略ver2.html">
+        <div class="route-content">
+          <span class="version">Ver.2 · 山河与王城</span>
+          <h2>帕米尔 + 莎车</h2>
+          <p>保留白沙湖、慕士塔格冰川与盘龙古道，取消红其拉甫和木吉，用两天感受莎车王城与木卡姆。</p>
+          <div class="meta"><span>约1150–1350km</span><span>莎车人文</span><span>节奏更均衡</span></div>
+          <span class="open">打开攻略 →</span>
+        </div>
+      </a>
+    </div>
+
+    <footer>出发前请再次核验边境通行证、道路、天气与景区预约信息。</footer>
+  </main>
+</body>
+</html>

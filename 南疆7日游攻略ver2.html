@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="喀什、帕米尔高原与莎车结合的南疆7日自驾攻略">
+  <title>山河与王城｜南疆7日自驾攻略 Ver.2</title>
+  <style>
+    :root { --ink:#20251f; --muted:#667066; --paper:#f5f2e9; --white:#fffef9; --line:#d7d8cc; --red:#b6412f; --green:#315c4c; --blue:#246c84; --gold:#c99132; --shadow:0 16px 45px rgba(34,40,31,.12); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; overflow-x:hidden; color:var(--ink); background:linear-gradient(rgba(49,92,76,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(49,92,76,.035) 1px,transparent 1px),var(--paper); background-size:32px 32px; font-family:"Noto Serif SC","Songti SC","Microsoft YaHei",serif; line-height:1.75; }
+    a { color:inherit; }
+    button { font:inherit; }
+    .wrap { width:min(1120px,calc(100% - 40px)); margin:0 auto; }
+    .hero { min-height:84vh; position:relative; display:flex; align-items:end; color:white; background:linear-gradient(180deg,rgba(12,24,22,.08) 20%,rgba(12,24,22,.8) 100%),url("https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=2000&q=86") center 44% / cover; }
+    .hero::after { content:""; position:absolute; inset:auto 0 0; height:5px; background:linear-gradient(90deg,var(--red) 0 28%,var(--gold) 28% 55%,var(--blue) 55% 78%,var(--green) 78%); }
+    .hero-inner { position:relative; z-index:1; padding:80px 0 64px; }
+    .kicker { margin:0 0 8px; font:700 14px/1.4 "Microsoft YaHei",sans-serif; }
+    h1 { margin:0; max-width:900px; font-size:clamp(48px,8vw,104px); line-height:1.04; letter-spacing:0; }
+    .lead { max-width:760px; margin:20px 0 28px; font-size:clamp(17px,2vw,22px); }
+    .hero-facts { display:flex; flex-wrap:wrap; gap:10px; font-family:"Microsoft YaHei",sans-serif; }
+    .hero-facts span { padding:7px 12px; border:1px solid rgba(255,255,255,.5); background:rgba(18,34,29,.35); backdrop-filter:blur(8px); }
+    .nav { position:sticky; top:0; z-index:10; background:rgba(245,242,233,.94); border-bottom:1px solid var(--line); backdrop-filter:blur(14px); }
+    .nav-inner { min-height:58px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
+    .brand { font-weight:900; white-space:nowrap; text-decoration:none; }
+    .links { min-width:0; display:flex; gap:22px; overflow-x:auto; font:700 14px "Microsoft YaHei",sans-serif; scrollbar-width:none; }
+    .links a { padding:20px 0; text-decoration:none; white-space:nowrap; }
+    .print-btn { border:0; background:var(--ink); color:white; width:36px; height:36px; cursor:pointer; flex:0 0 auto; }
+    section { padding:82px 0; }
+    .section-head { display:grid; grid-template-columns:180px 1fr; gap:24px; margin-bottom:36px; }
+    .section-no { color:var(--red); font:800 14px "Microsoft YaHei",sans-serif; }
+    h2 { margin:0; font-size:clamp(32px,5vw,58px); line-height:1.16; letter-spacing:0; }
+    .section-intro { max-width:760px; margin:12px 0 0; color:var(--muted); }
+    .summary { margin-top:-1px; background:var(--white); border-bottom:1px solid var(--line); }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); }
+    .stat { padding:28px; border-right:1px solid var(--line); }
+    .stat:last-child { border-right:0; }
+    .stat strong { display:block; font-size:29px; line-height:1.2; }
+    .stat small { color:var(--muted); font-family:"Microsoft YaHei",sans-serif; }
+    .route-line { margin:28px 0 0; padding:20px 24px; border-left:4px solid var(--red); background:var(--paper); font-weight:700; }
+    .notice { display:grid; grid-template-columns:52px 1fr; gap:14px; padding:22px; background:#fff4dc; border:1px solid #e8c982; margin-top:28px; }
+    .notice-mark { width:42px; height:42px; display:grid; place-items:center; background:var(--gold); color:white; font:900 20px "Microsoft YaHei",sans-serif; }
+    .notice strong { display:block; }
+    .notice p { margin:4px 0 0; }
+    .days { display:grid; gap:22px; }
+    .day { display:grid; grid-template-columns:180px 1fr; gap:24px; padding:30px 0; border-top:1px solid var(--line); }
+    .day-label { position:sticky; top:88px; align-self:start; }
+    .day-label b { display:block; color:var(--red); font:900 34px/1 "Microsoft YaHei",sans-serif; }
+    .day-label span { display:block; margin-top:8px; color:var(--muted); }
+    .day-main h3 { margin:0 0 6px; font-size:clamp(24px,3vw,34px); line-height:1.35; }
+    .route-meta { display:flex; flex-wrap:wrap; gap:9px; margin:12px 0 22px; font:700 13px "Microsoft YaHei",sans-serif; }
+    .tag { padding:5px 9px; color:var(--green); border:1px solid #9eb8ac; background:#f4faf6; }
+    .timeline { display:grid; grid-template-columns:82px 1fr; }
+    .time,.event { padding:12px 0; border-bottom:1px dashed var(--line); }
+    .time { color:var(--red); font:800 13px/1.8 "Microsoft YaHei",sans-serif; }
+    .event strong { display:block; }
+    .event p { margin:2px 0 0; color:var(--muted); }
+    .tip { margin-top:18px; padding:16px 18px; color:#244b3f; background:#e9f1ed; border-left:3px solid var(--green); }
+    .practical { color:white; background:var(--green); }
+    .practical .section-no,.practical .section-intro { color:#c9ddd5; }
+    .info-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .info { padding:24px; border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.06); }
+    .info h3 { margin:0 0 12px; font-size:22px; }
+    .info ul { margin:0; padding-left:20px; }
+    .info li + li { margin-top:8px; }
+    .info.wide { grid-column:span 2; }
+    .checklist { columns:2; column-gap:32px; }
+    .budget-grid { display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:start; }
+    .budget-table { width:100%; border-collapse:collapse; background:var(--white); box-shadow:var(--shadow); }
+    .budget-table th,.budget-table td { padding:15px 18px; text-align:left; border-bottom:1px solid var(--line); }
+    .budget-table th { color:white; background:var(--ink); font-family:"Microsoft YaHei",sans-serif; }
+    .budget-table td:last-child { text-align:right; white-space:nowrap; }
+    .budget-note { padding:26px; border:1px solid var(--line); }
+    .budget-note h3 { margin-top:0; }
+    .sources { background:#e9e5d9; }
+    .source-list { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .source-list a { display:flex; justify-content:space-between; gap:20px; padding:16px 18px; background:var(--white); border:1px solid var(--line); text-decoration:none; }
+    .source-list a:hover { border-color:var(--red); }
+    .source-list span { color:var(--red); font-family:"Microsoft YaHei",sans-serif; }
+    .asof { margin-top:24px; color:var(--muted); font-size:14px; }
+    footer { padding:32px 0 44px; color:#d4ddd7; background:var(--ink); }
+    footer .wrap { display:flex; justify-content:space-between; gap:20px; }
+    footer p { margin:0; }
+    @media (max-width:780px) {
+      .wrap { width:min(100% - 28px,1120px); }
+      .hero { min-height:78vh; }
+      .hero-inner { padding-bottom:48px; }
+      .nav .brand { display:none; }
+      .nav-inner { justify-content:center; }
+      .links { gap:16px; }
+      .section-head,.day { grid-template-columns:1fr; gap:12px; }
+      section { padding:60px 0; }
+      .stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .stat { min-width:0; padding:22px 18px; }
+      .stat strong { overflow-wrap:anywhere; }
+      .stat:nth-child(2) { border-right:0; }
+      .stat:nth-child(-n+2) { border-bottom:1px solid var(--line); }
+      .day-label { position:static; display:flex; align-items:baseline; gap:12px; }
+      .day-label span { margin:0; }
+      .info-grid,.budget-grid,.source-list { grid-template-columns:1fr; }
+      .info.wide { grid-column:auto; }
+      .checklist { columns:1; }
+      footer .wrap { display:block; }
+      footer p + p { margin-top:8px; }
+    }
+    @media print {
+      body { background:white; font-size:11pt; }
+      .hero { min-height:240px; color:var(--ink); background:none; border-bottom:4px solid var(--red); }
+      .hero-inner { padding:30px 0; }
+      h1 { font-size:44pt; }
+      .nav,.print-btn { display:none; }
+      section { padding:32px 0; }
+      .day { break-inside:avoid; }
+      .day-label { position:static; }
+      .practical { color:var(--ink); background:white; }
+      .practical .section-intro,.practical .section-no { color:var(--muted); }
+      .info { border-color:var(--line); }
+      a { text-decoration:none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap hero-inner">
+      <p class="kicker">喀什出发 · 帕米尔经典三日 · 莎车人文 · 7天6晚</p>
+      <h1>山河与王城</h1>
+      <p class="lead">前三天进入白沙湖、慕士塔格峰与盘龙古道，后半程回到喀什和莎车的市井、音乐与王城遗迹。少一点边境赶路，多一点南疆人文。</p>
+      <div class="hero-facts"><span>建议自驾 / 包车</span><span>约 1,150–1,350 km</span><span>最高活动区约 4,500 m</span><span>最佳体验 6–10月</span></div>
+    </div>
+  </header>
+
+  <nav class="nav" aria-label="页面导航">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top">南疆路书 Ver.2</a>
+      <div class="links"><a href="#overview">总览</a><a href="#itinerary">每日行程</a><a href="#practical">行前准备</a><a href="#budget">预算</a><a href="#sources">实时核验</a></div>
+      <button class="print-btn" type="button" onclick="window.print()" aria-label="打印攻略" title="打印攻略">⎙</button>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="summary" id="overview">
+      <div class="wrap">
+        <div class="section-head"><div class="section-no">01 / 路线总览</div><div><h2>保留帕米尔精华，把时间还给莎车</h2><p class="section-intro">取消红其拉甫和木吉，塔县压缩为两晚。路线仍包含白沙湖、喀拉库勒湖、慕士塔格冰川、盘龙古道与班迪尔蓝湖，再用两天认识莎车。</p></div></div>
+        <div class="stats">
+          <div class="stat"><strong>7天6晚</strong><small>喀什3晚 · 塔县2晚 · 莎车1晚</small></div>
+          <div class="stat"><strong>约24h</strong><small>累计驾驶参考，检查与堵车另计</small></div>
+          <div class="stat"><strong>2个重心</strong><small>帕米尔山河 · 莎车人文</small></div>
+          <div class="stat"><strong>¥4.5k–7k</strong><small>2人一车的人均参考，不含大交通</small></div>
+        </div>
+        <p class="route-line">喀什 → 白沙湖 → 喀拉库勒湖 → 塔县 → 慕士塔格冰川 → 盘龙古道 → 班迪尔蓝湖 → 喀什 → 莎车 → 喀什</p>
+        <div class="notice"><div class="notice-mark">!</div><div><strong>第4天是全程驾驶强度最高的一天</strong><p>盘龙古道、班迪尔蓝湖后返回喀什路程较长，必须早出发；若天气、通行或体力不理想，取消盘龙古道，沿 G314 直接返喀什。建议出发前 1～2 周办妥覆盖塔县的边境通行证。</p></div></div>
+      </div>
+    </section>
+
+    <section id="itinerary">
+      <div class="wrap">
+        <div class="section-head"><div class="section-no">02 / 每日行程</div><div><h2>三天山河，两天王城</h2><p class="section-intro">时间为顺利路况下的建议节奏。第4天和第6天都保留删减空间，不用为完成清单牺牲安全和体验。</p></div></div>
+        <div class="days">
+          <article class="day">
+            <div class="day-label"><b>DAY 1</b><span>住喀什</span></div>
+            <div class="day-main"><h3>喀什初见｜把速度降下来</h3><div class="route-meta"><span class="tag">轻松步行</span><span class="tag">适应日</span><span class="tag">古城夜景</span></div><div class="timeline">
+              <div class="time">上午</div><div class="event"><strong>抵达、取车、补给</strong><p>检查轮胎和备胎，购买饮水、路餐和防晒用品。确认边境通行证、冰川预约及次日道路状态。</p></div>
+              <div class="time">下午</div><div class="event"><strong>喀什古城慢逛</strong><p>从西区进入，走小巷、看土陶与木器。第一天不安排长距离驾驶。</p></div>
+              <div class="time">傍晚</div><div class="event"><strong>高台民居外观 / 古城日落</strong><p>开放状态以现场为准；若关闭，就把时间留给古城屋顶与街巷。</p></div>
+              <div class="time">晚上</div><div class="event"><strong>早点休息</strong><p>第二天需要连续驾驶，避免饮酒与熬夜。</p></div>
+            </div><div class="tip">晚餐可选抓饭、烤肉、缸子肉，不必执着网红店。热门店营业状态先用地图电话确认。</div></div>
+          </article>
+
+          <article class="day">
+            <div class="day-label"><b>DAY 2</b><span>住塔县</span></div>
+            <div class="day-main"><h3>驶入帕米尔｜白沙湖与慕士塔格</h3><div class="route-meta"><span class="tag">约300km</span><span class="tag">驾驶5–7h</span><span class="tag">海拔升至约3,100m</span></div><div class="timeline">
+              <div class="time">08:00</div><div class="event"><strong>喀什出发，沿 G314 向西</strong><p>加满油；检查站备好身份证、驾驶证、行驶证和边境通行证原件。</p></div>
+              <div class="time">10:30</div><div class="event"><strong>奥依塔克红山谷短停</strong><p>只在正规停车区或安全停车带停靠，不在弯道和落石区停车拍照。</p></div>
+              <div class="time">12:30</div><div class="event"><strong>白沙湖</strong><p>按现场标识进入，上午通常风更小；不要为了南北岸都打卡拖慢全天节奏。</p></div>
+              <div class="time">15:00</div><div class="event"><strong>喀拉库勒湖</strong><p>天气好时可同看公格尔与慕士塔格峰。外套放在随手可取处。</p></div>
+              <div class="time">18:30</div><div class="event"><strong>抵达塔县</strong><p>体力允许再短停塔合曼湿地；入住后不剧烈运动，不洗过热长澡。</p></div>
+            </div><div class="tip">当天宁可少停一个点，也不要摸黑进塔县。头痛、恶心或气促持续加重时应停止上升并尽快就医。</div></div>
+          </article>
+
+          <article class="day">
+            <div class="day-label"><b>DAY 3</b><span>住塔县</span></div>
+            <div class="day-main"><h3>冰川日｜靠近“冰山之父”</h3><div class="route-meta"><span class="tag">约160–220km</span><span class="tag">区间车+徒步</span><span class="tag">高海拔活动</span></div><div class="timeline">
+              <div class="time">08:30</div><div class="event"><strong>前往慕士塔格冰川公园</strong><p>提前核验开放、预约和售票，按景区交通组织游览，不进入未开放冰川或野线。</p></div>
+              <div class="time">中午</div><div class="event"><strong>景区内简餐</strong><p>携带保温水与高能量零食，慢走少说话；不适时不要硬撑到观景台。</p></div>
+              <div class="time">16:00</div><div class="event"><strong>返回塔县</strong><p>若上午因天气关闭，不长时间等待，改为塔合曼湿地或县城休息。</p></div>
+              <div class="time">18:00</div><div class="event"><strong>石头城与金草滩</strong><p>选择仍开放且体力可承受的项目；日落后尽早回酒店整理次日行李。</p></div>
+            </div><div class="tip">这天不叠加盘龙古道。冰川可达区域海拔较高，氧气只能短时辅助，不能替代下撤和医疗。</div></div>
+          </article>
+
+          <article class="day">
+            <div class="day-label"><b>DAY 4</b><span>住喀什</span></div>
+            <div class="day-main"><h3>弯道与蓝湖｜盘龙古道后返喀什</h3><div class="route-meta"><span class="tag">约420–500km</span><span class="tag">驾驶9–11h</span><span class="tag">全程最累</span></div><div class="timeline">
+              <div class="time">07:00</div><div class="event"><strong>退房并确认通行方向</strong><p>盘龙古道可能实行单向或临时管制，以交警和现场标识为准；加满油，司机状态不佳就直接返喀什。</p></div>
+              <div class="time">上午</div><div class="event"><strong>大盘龙 / 小盘龙</strong><p>连续弯道控制车速，司机不边开边拍；易晕车者提前按医嘱用药。</p></div>
+              <div class="time">12:30</div><div class="event"><strong>瓦恰乡简餐、班迪尔蓝湖</strong><p>只作短停，不绕行无名道路。湖边停车后留意来车和陡坡。</p></div>
+              <div class="time">14:30</div><div class="event"><strong>转入返喀什路程</strong><p>沿当天允许通行的路线返回 G314；白沙湖只在时间充足时短停，不等待日落。</p></div>
+              <div class="time">21:00</div><div class="event"><strong>抵达喀什</strong><p>晚到时直接入住，不再安排古城夜游。两位司机应轮换并保证充分休息。</p></div>
+            </div><div class="tip"><strong>安全降级：</strong>如果只有一位司机、同行有明显高反，或预计无法天黑前驶出山区，取消盘龙古道和班迪尔蓝湖，沿 G314 直接返喀什。</div></div>
+          </article>
+
+          <article class="day">
+            <div class="day-label"><b>DAY 5</b><span>住莎车</span></div>
+            <div class="day-main"><h3>从喀什到莎车｜走进叶尔羌王城</h3><div class="route-meta"><span class="tag">约200km</span><span class="tag">驾驶3–4h</span><span class="tag">人文转换</span></div><div class="timeline">
+              <div class="time">09:30</div><div class="event"><strong>睡足后从喀什出发</strong><p>第4天晚归，因此不安排早班出发；走高速或当天路况更稳的主路前往莎车。</p></div>
+              <div class="time">13:30</div><div class="event"><strong>抵达、午餐、入住</strong><p>尝试缸子肉、烤包子或抓饭，把车停在酒店后步行游览核心区域。</p></div>
+              <div class="time">15:00</div><div class="event"><strong>叶尔羌汗国王陵</strong><p>重点了解阿曼尼莎汗与十二木卡姆背景；开放时间、讲解与票务以当天公告为准。</p></div>
+              <div class="time">傍晚</div><div class="event"><strong>莎车老城 / 非遗博览园</strong><p>选择公开开放区域慢逛，留意当天是否有木卡姆或民俗演出，不追赶所有场次。</p></div>
+              <div class="time">晚上</div><div class="event"><strong>老城夜色与夜市</strong><p>感受本地生活节奏，尊重居民与表演者，拍摄人物前先征得同意。</p></div>
+            </div><div class="tip">莎车的重点不是景点数量，而是王陵、音乐和街巷共同构成的历史感。住宿优先选停车方便、靠近老城但夜间安静的位置。</div></div>
+          </article>
+
+          <article class="day">
+            <div class="day-label"><b>DAY 6</b><span>住喀什</span></div>
+            <div class="day-main"><h3>莎车半日｜不赶场地返回喀什</h3><div class="route-meta"><span class="tag">约200km</span><span class="tag">驾驶3–4h</span><span class="tag">留有机动</span></div><div class="timeline">
+              <div class="time">09:00</div><div class="event"><strong>莎车老城晨间散步</strong><p>补看前一天下午错过的街区或市场；不要进入封闭院落，不打扰居民日常。</p></div>
+              <div class="time">10:30</div><div class="event"><strong>博物馆 / 非遗体验二选一</strong><p>根据当日开放和兴趣选择一个即可，避免为了“全看完”压缩返程。</p></div>
+              <div class="time">13:30</div><div class="event"><strong>午餐后返喀什</strong><p>上车前补水检查，尽量在傍晚前抵达喀什；不临时绕行偏远乡道。</p></div>
+              <div class="time">18:00</div><div class="event"><strong>喀什还车或古城晚餐</strong><p>若次日不再用车，可提前还车；否则确认停车位置与次日还车时间。</p></div>
+            </div><div class="tip">若第5天已充分游览莎车，第6天可早餐后直接返喀什，把下午留给休息、购物或处理返程事务。</div></div>
+          </article>
+
+          <article class="day">
+            <div class="day-label"><b>DAY 7</b><span>喀什返程</span></div>
+            <div class="day-main"><h3>喀什收尾｜为返程保留余量</h3><div class="route-meta"><span class="tag">轻松步行</span><span class="tag">机动半日</span><span class="tag">返程日</span></div><div class="timeline">
+              <div class="time">上午</div><div class="event"><strong>古城查漏补缺</strong><p>可选艾提尕尔周边、东区街巷或咖啡馆，不安排需要长距离往返的新景点。</p></div>
+              <div class="time">中午</div><div class="event"><strong>最后一顿南疆午餐</strong><p>根据航班时间控制节奏，避免点耗时过长的大份菜。</p></div>
+              <div class="time">返程前</div><div class="event"><strong>还车与前往机场 / 车站</strong><p>还车前加油并拍照留存车况；国内航班建议至少提前2小时到达机场，旺季再增加余量。</p></div>
+            </div><div class="tip">这一天本质是缓冲日。若第4天山区管制或第6天返程延误，它能吸收变化，不必把空白强行填满。</div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="practical" id="practical">
+      <div class="wrap">
+        <div class="section-head"><div class="section-no">03 / 行前准备</div><div><h2>证件、高反与长途驾驶优先</h2><p class="section-intro">调整版减少了边境深处行程，但塔县与冰川仍需认真准备。莎车段则要留意演出、场馆开放和返程路况。</p></div></div>
+        <div class="info-grid">
+          <div class="info wide"><h3>证件与预约｜边境通行证怎么办</h3><ul><li><strong>什么时候办：</strong>建议出发前1～2周启动，不把抵达喀什后现场办理当作确定方案</li><li><strong>优先路径：</strong>到户籍所在地县级公安机关或指定派出所申请“边境管理区通行证”</li><li><strong>常见材料：</strong>身份证、申请表、近期证件照；补充材料以受理点最新要求为准</li><li><strong>目的地填写：</strong>本版只需重点覆盖“喀什地区塔什库尔干塔吉克自治县”；已取消红其拉甫和木吉</li><li><strong>领取检查：</strong>核对姓名、身份证号、有效期及通行区域，全程携带身份证和纸质通行证原件</li><li><strong>现场备选：</strong>可拨打12367咨询政策，并向喀什当地公安机关确认最新办证点</li><li><strong>预约：</strong>另行核对慕士塔格冰川、莎车场馆及演出的开放与预约信息</li></ul></div>
+          <div class="info"><h3>高原健康</h3><ul><li>喀什约1,300m，塔县约3,100m，冰川活动区更高</li><li>前48小时慢走、少酒，不洗过热长澡</li><li>严重头痛、静息气促、意识异常、步态不稳应立即下撤就医</li><li>氧气可应急，但不能掩盖持续恶化的症状</li></ul></div>
+          <div class="info"><h3>车辆与驾驶</h3><ul><li>第4天最好有两位司机，单司机建议直接走G314返喀什</li><li>检查备胎、胎压、刹车、玻璃水</li><li>偏远路段油量低于一半就补</li><li>莎车往返走主路，不为省少量时间走陌生乡道</li></ul></div>
+          <div class="info wide"><h3>装包清单｜按必要程度</h3><ul class="checklist"><li><strong>必须｜证件原件：</strong>身份证、驾驶证、行驶证、边境通行证</li><li><strong>必须｜防晒防干：</strong>SPF50+防晒霜、UV400墨镜、遮阳帽、润唇膏</li><li><strong>必须｜分层保暖：</strong>速干内层、抓绒或薄羽绒、防风外壳、保暖帽</li><li><strong>必须｜硬底防滑鞋：</strong>冰川段有高海拔上坡，不穿拖鞋或光底鞋</li><li><strong>必须｜补水路餐：</strong>保温杯、饮用水、电解质饮料、高能量零食</li><li><strong>必须｜个人用药：</strong>足量处方药、晕车药与基础外伤用品</li><li><strong>必须｜离线与供电：</strong>充电宝、车充、充电线、离线地图</li><li><strong>必须｜断网备用：</strong>少量现金、酒店和救援电话截图</li><li><strong>自驾必须：</strong>备胎、千斤顶、三角警示牌、充气泵</li><li><strong>有条件必带：</strong>经医生评估准备便携氧气和指夹血氧仪</li><li><strong>可选：</strong>登山杖、相机备用电池、暖宝宝</li><li><strong>底线：</strong>异常症状持续加重，立即下撤就医</li></ul></div>
+          <div class="info"><h3>季节判断</h3><ul><li>6–8月白昼长、旺季人多，山区仍可能骤冷</li><li>9–10月通透、秋色好，昼夜温差更大</li><li>冬春冰雪封路概率高，部分景区季节性关闭</li><li>每天出发前复核天气、道路与景区公告</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="budget">
+      <div class="wrap">
+        <div class="section-head"><div class="section-no">04 / 预算参考</div><div><h2>两人一车，舒适但不奢侈</h2><p class="section-intro">人民币估算，不含抵达喀什的大交通。调整版里程更短、偏远住宿更少，预算通常低于原版。</p></div></div>
+        <div class="budget-grid">
+          <table class="budget-table"><thead><tr><th>项目（2人合计）</th><th>参考范围</th></tr></thead><tbody>
+            <tr><td>租车7天</td><td>¥2,500–4,500</td></tr><tr><td>油费 + 停车</td><td>¥1,000–1,500</td></tr><tr><td>住宿6晚</td><td>¥2,200–4,000</td></tr><tr><td>餐饮</td><td>¥1,400–2,200</td></tr><tr><td>门票 / 区间车 / 演出</td><td>¥900–1,800</td></tr><tr><td>保险 / 氧气 / 杂项</td><td>¥600–1,000</td></tr><tr><td><strong>合计</strong></td><td><strong>¥8,600–15,000</strong></td></tr>
+          </tbody></table>
+          <div class="budget-note"><h3>哪里值得花钱</h3><p><strong>塔县住宿：</strong>优先供暖、热水稳定且睡眠评价好的酒店。</p><p><strong>莎车住宿：</strong>优先停车方便、靠近老城但夜间安静的位置。</p><p><strong>车辆：</strong>不必盲目追求越野车，但车况、保险与救援范围必须清楚。</p><p><strong>弹性预订：</strong>冰川可能因天气关闭，演出场次也可能调整，尽量选可退订项目。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sources" id="sources">
+      <div class="wrap">
+        <div class="section-head"><div class="section-no">05 / 实时核验</div><div><h2>出发前，重新查一遍</h2><p class="section-intro">本页不写死票价和开放时段。结合政务入口、景区官方公众号、场馆电话与交警当天通知核验。</p></div></div>
+        <div class="source-list">
+          <a href="https://www.kashi.gov.cn/" target="_blank" rel="noopener"><strong>喀什地区行政公署</strong><span>政务与公告 ↗</span></a>
+          <a href="https://s.nia.gov.cn/mps/main.html" target="_blank" rel="noopener"><strong>国家移民管理局政务服务平台</strong><span>办事入口 ↗</span></a>
+          <a href="https://www.xjta.gov.cn/" target="_blank" rel="noopener"><strong>新疆文旅厅</strong><span>文旅公告 ↗</span></a>
+          <a href="https://www.weather.com.cn/weather/101130901.shtml" target="_blank" rel="noopener"><strong>中国天气网 · 喀什</strong><span>天气预警 ↗</span></a>
+          <a href="https://you.ctrip.com/place/nanjiang120471.html" target="_blank" rel="noopener"><strong>携程 · 南疆攻略</strong><span>近期游记与实况 ↗</span></a>
+          <a href="https://you.ctrip.com/sight/akto1446375/5067964.html" target="_blank" rel="noopener"><strong>携程 · 慕士塔格冰川公园</strong><span>游客反馈 ↗</span></a>
+          <a href="https://www.12328.cn/" target="_blank" rel="noopener"><strong>12328交通运输服务监督</strong><span>交通咨询 ↗</span></a>
+          <a href="https://map.baidu.com/" target="_blank" rel="noopener"><strong>地图实时路况</strong><span>车程复核 ↗</span></a>
+        </div>
+        <p class="asof">攻略整理日期：2026-08-28。路线为原攻略的“帕米尔经典三日 + 莎车”调整版。临时管制、票价、演出与预约规则均以出发时官方通知为准。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap"><p>南疆7日自驾路书 Ver.2</p><p>看过雪峰，也听见王城。</p></div></footer>
+</body>
+</html>
