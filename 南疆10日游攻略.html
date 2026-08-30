@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="乌鲁木齐往返，结合喀什、帕米尔高原、莎车与天山天池的新疆10日攻略">
-  <title>山河与王城｜新疆10日旅行攻略 Ver.3 高德地图版</title>
+  <title>山河与王城｜新疆10日旅行攻略</title>
   <style>
     :root { --ink:#20251f; --muted:#667066; --paper:#f5f2e9; --white:#fffef9; --line:#d7d8cc; --red:#b6412f; --green:#315c4c; --blue:#246c84; --gold:#c99132; --shadow:0 16px 45px rgba(34,40,31,.12); }
     * { box-sizing:border-box; }
@@ -27,9 +27,12 @@
     .links { min-width:0; display:flex; gap:22px; overflow-x:auto; font:700 14px "Microsoft YaHei",sans-serif; scrollbar-width:none; }
     .links a { position:relative; padding:20px 0; text-decoration:none; white-space:nowrap; }
     .links a::after { content:""; position:absolute; right:0; bottom:13px; left:0; height:2px; background:var(--red); transform:scaleX(0); transform-origin:left; transition:transform .2s ease; }
-    .links a:hover::after,.links a:focus-visible::after { transform:scaleX(1); }
+    .links a:hover::after,.links a:focus-visible::after,.links a[aria-selected="true"]::after { transform:scaleX(1); }
+    .links a[aria-selected="true"] { color:var(--red); }
     .print-btn { border:0; background:var(--ink); color:white; width:36px; height:36px; cursor:pointer; flex:0 0 auto; transition:background .2s ease,transform .2s ease; }
     .print-btn:hover { background:var(--red); transform:translateY(-1px); }
+    .tab-panel { width:min(1180px,calc(100% - 24px)); margin:28px auto; border:1px solid var(--line); box-shadow:var(--shadow); }
+    .tab-panel[hidden] { display:none; }
     section { padding:82px 0; }
     .section-head { display:grid; grid-template-columns:180px 1fr; gap:24px; margin-bottom:36px; }
     .section-no { color:var(--red); font:800 14px "Microsoft YaHei",sans-serif; }
@@ -77,6 +80,14 @@
     .day-label { position:sticky; top:88px; align-self:start; }
     .day-label b { display:block; color:var(--red); font:900 34px/1 "Microsoft YaHei",sans-serif; }
     .day-label span { display:block; margin-top:8px; color:var(--muted); }
+    .day-summary { position:relative; min-height:72px; padding-right:52px; cursor:pointer; }
+    .day-summary .route-meta { margin-bottom:0; }
+    .day-toggle { position:absolute; top:50%; right:8px; width:34px; height:34px; z-index:1; display:grid; padding:0; place-items:center; color:white; border:0; background:var(--green); transform:translateY(-50%); cursor:pointer; font:700 20px/1 "Microsoft YaHei",sans-serif; }
+    .day-toggle[aria-expanded="true"] { background:var(--red); }
+    .day-toggle:hover { background:var(--ink); }
+    .day-toggle:focus-visible { outline:3px solid rgba(36,108,132,.45); outline-offset:3px; }
+    .day-details { padding-top:14px; }
+    .day-details[hidden] { display:none; }
     .day-main h3 { margin:0 0 6px; font-size:clamp(24px,3vw,34px); line-height:1.35; }
     .route-meta { display:flex; flex-wrap:wrap; gap:9px; margin:12px 0 22px; font:700 13px "Microsoft YaHei",sans-serif; }
     .tag { padding:5px 9px; color:var(--green); border:1px solid #9eb8ac; background:#f4faf6; box-shadow:0 2px 0 rgba(49,92,76,.08); }
@@ -150,9 +161,12 @@
       .hero-inner { padding-bottom:48px; }
       .nav .brand { display:none; }
       .nav-inner { justify-content:center; }
-      .links { gap:16px; }
+      .links { gap:16px; scroll-snap-type:x proximity; }
+      .links a { scroll-snap-align:center; }
       .section-head,.day { grid-template-columns:1fr; gap:12px; }
       section { padding:60px 0; }
+      .notice { grid-template-columns:1fr; padding:18px; }
+      .notice-mark { width:36px; height:36px; }
       .stats { grid-template-columns:repeat(2,minmax(0,1fr)); }
       .stat { min-width:0; padding:22px 18px; }
       .stat strong { overflow-wrap:anywhere; }
@@ -169,6 +183,8 @@
       .map-panel { border-top:1px solid var(--line); border-left:0; }
       .map-controls { grid-template-columns:1fr; }
       .info-grid,.source-list { grid-template-columns:1fr; }
+      .source-list a { display:grid; gap:6px; }
+      .source-list span { justify-self:start; }
       .info.wide { grid-column:auto; }
       .checklist { columns:1; }
       footer .wrap { display:block; }
@@ -181,11 +197,15 @@
       h1 { font-size:44pt; }
       .nav,.print-btn { display:none; }
       section { padding:32px 0; }
+      .tab-panel,.tab-panel[hidden] { display:block; width:100%; margin:0; border:0; box-shadow:none; }
       .map-layout { display:block; box-shadow:none; }
       #trip-map { min-height:420px; }
       .map-panel { display:none; }
       .day { break-inside:avoid; }
       .day-label { position:static; }
+      .day-summary { min-height:0; padding-right:0; }
+      .day-toggle { display:none; }
+      .day-details,.day-details[hidden] { display:block !important; }
       .practical { color:var(--ink); background:white; }
       .practical .section-intro,.practical .section-no { color:var(--muted); }
       .info { border-color:var(--line); }
@@ -198,23 +218,23 @@
     <div class="wrap hero-inner">
       <p class="kicker">乌鲁木齐往返 · 帕米尔舒缓四日 · 莎车火车一日游 · 天山天池 · 10天9晚</p>
       <h1>山河与王城</h1>
-      <p class="lead">首日留给乌鲁木齐落地，返程前安排天山天池；中段飞往喀什，进入白沙湖、慕士塔格峰与班迪尔蓝湖，再乘火车走进莎车的市井、音乐与王城遗迹。</p>
+      <p class="lead">自乌鲁木齐落笔，向喀什与帕米尔深处行去。白沙湖的风、慕士塔格的雪与班迪尔的蓝一路相迎，铁轨又将旅人带入莎车，在市井烟火、木卡姆旋律与王城旧梦间停驻；归来时，再以天山天池的一泓碧色作结。</p>
       <div class="hero-facts"><span>帕米尔自驾 + 莎车火车</span><span>南疆自驾约 850–950 km</span><span>最高活动区约 4,500 m</span><span>最佳体验 6–10月</span></div>
     </div>
   </header>
 
   <nav class="nav" aria-label="页面导航">
     <div class="wrap nav-inner">
-      <a class="brand" href="#top">南疆路书 Ver.3</a>
-      <div class="links"><a href="#overview">总览</a><a href="#route-map">行程地图</a><a href="#itinerary">每日行程</a><a href="#practical">行前准备</a><a href="#budget">消费统计</a><a href="#sources">实时核验</a></div>
+      <a class="brand" href="#top">南疆</a>
+      <div class="links" role="tablist" aria-label="攻略栏目"><a id="tab-overview" href="#overview" role="tab" aria-controls="overview" aria-selected="true">总览</a><a id="tab-practical" href="#practical" role="tab" aria-controls="practical" aria-selected="false" tabindex="-1">行前准备</a><a id="tab-itinerary" href="#itinerary" role="tab" aria-controls="itinerary" aria-selected="false" tabindex="-1">每日行程</a><a id="tab-route-map" href="#route-map" role="tab" aria-controls="route-map" aria-selected="false" tabindex="-1">行程地图</a><a id="tab-budget" href="#budget" role="tab" aria-controls="budget" aria-selected="false" tabindex="-1">消费统计</a><a id="tab-sources" href="#sources" role="tab" aria-controls="sources" aria-selected="false" tabindex="-1">实时核验</a></div>
       <button class="print-btn" type="button" onclick="window.print()" aria-label="打印攻略" title="打印攻略">⎙</button>
     </div>
   </nav>
 
   <main id="top">
-    <section class="summary" id="overview">
+    <section class="summary tab-panel" id="overview" role="tabpanel" aria-labelledby="tab-overview">
       <div class="wrap">
-        <div class="section-head"><div class="section-no">01 / 路线总览</div><div><h2>乌鲁木齐进出，南疆段不赶路</h2><p class="section-intro">首日抵达乌鲁木齐，次日飞喀什；塔县连住三晚，蓝湖与返程拆开。莎车采用火车一日游，最后从喀什飞回乌鲁木齐，安排天山天池后再返程。</p></div></div>
+        <div class="section-head"><div class="section-no">01 / 路线总览</div><div><h2>从天山门户启程，向南疆从容而行</h2><p class="section-intro">旅程从乌鲁木齐展开，继而飞赴喀什。沿中巴友谊公路驶入帕米尔，让白沙湖、慕士塔格与班迪尔蓝湖在高原晨昏中次第相逢；再循铁轨走进莎车旧梦，最后回到天山脚下，于一池碧水之后踏上归途。</p></div></div>
         <div class="stats">
           <div class="stat"><strong>10天9晚</strong><small>乌鲁木齐3晚 · 喀什3晚 · 塔县3晚</small></div>
           <div class="stat"><strong>约17h</strong><small>南疆租车段累计驾驶参考</small></div>
@@ -226,7 +246,7 @@
       </div>
     </section>
 
-    <section class="map-section" id="route-map">
+    <section class="map-section tab-panel" id="route-map" role="tabpanel" aria-labelledby="tab-route-map" hidden>
       <div class="wrap">
         <div class="section-head"><div class="section-no">02 / 行程地图</div><div><h2>十天轨迹，一张图看清</h2><p class="section-intro">点击右侧日期只看当天路线。9月4日、5日、11日和13日为航班示意，9月10日为火车示意，9月12日为旅行团大巴示意；9月6日至9日显示高德驾车路线。</p></div></div>
         <div class="map-layout">
@@ -242,7 +262,7 @@
       </div>
     </section>
 
-    <section id="itinerary">
+    <section class="tab-panel" id="itinerary" role="tabpanel" aria-labelledby="tab-itinerary" hidden>
       <div class="wrap">
         <div class="section-head"><div class="section-no">03 / 每日行程</div><div><h2>从天山门户，到帕米尔与王城</h2><p class="section-intro"><strong>以下全部为北京时间。</strong>新疆生活节奏通常较晚，但机票、火车、预约及官方通知均按北京时间执行。景点状态首次由高德 POI 查询后固定缓存在当前浏览器，不会随刷新重复查询；最终以景区当天公告和现场管制为准。</p></div></div>
         <div class="days">
@@ -354,7 +374,7 @@
       </div>
     </section>
 
-    <section class="practical" id="practical">
+    <section class="practical tab-panel" id="practical" role="tabpanel" aria-labelledby="tab-practical" hidden>
       <div class="wrap">
         <div class="section-head"><div class="section-no">04 / 行前准备</div><div><h2>航班衔接、证件与高反优先</h2><p class="section-intro">增加乌鲁木齐前后缓冲后，单日压力更低；仍需提前确认 GJ8967、CZ6805、CA9656、GS7517 四段航班，以及莎车火车、天池旅行团、边境证和冰川开放。</p></div></div>
         <div class="info-grid">
@@ -367,7 +387,7 @@
       </div>
     </section>
 
-    <section id="budget">
+    <section class="tab-panel" id="budget" role="tabpanel" aria-labelledby="tab-budget" hidden>
       <div class="wrap">
         <div class="section-head"><div class="section-no">05 / 消费统计</div><div><h2>两人消费，一处汇总</h2><p class="section-intro">每日填写金额并选择付款人后，下表会自动统计10天内两个人分别支付的金额，并计算均分结算结果。</p></div></div>
         <div class="actual-budget">
@@ -386,7 +406,7 @@
       </div>
     </section>
 
-    <section class="sources" id="sources">
+    <section class="sources tab-panel" id="sources" role="tabpanel" aria-labelledby="tab-sources" hidden>
       <div class="wrap">
         <div class="section-head"><div class="section-no">06 / 实时核验</div><div><h2>出发前，重新查一遍</h2><p class="section-intro">消费栏中的票价仅供参考，不预填、不自动计入合计。实际价格和开放时段需结合政务入口、景区官方公众号、场馆电话与交警当天通知核验。</p></div></div>
         <div class="source-list">
@@ -404,7 +424,7 @@
     </section>
   </main>
 
-  <footer><div class="wrap"><p>新疆10日旅行路书 Ver.3 · 高德地图版</p><p>看过雪峰，也听见王城。</p></div></footer>
+  <footer><div class="wrap"><p>新疆10日游</p><p>看过雪峰，也听见王城。</p></div></footer>
   <script src="https://webapi.amap.com/loader.js"></script>
   <script>
     const places = {
@@ -477,6 +497,7 @@
     let roadPathCache = {};
     let map;
     let infoWindow;
+    let mapInitializationStarted = false;
 
     try {
       poiStatusCache = JSON.parse(localStorage.getItem(poiCacheStorageKey)) || {};
@@ -512,6 +533,79 @@
         console.warn("无法保存高德驾车路线缓存", error);
       }
       return cachedResult;
+    }
+
+    function initializeSectionTabs() {
+      const tabs = [...document.querySelectorAll('[role="tab"]')];
+      const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+      const activateTab = (tab, updateHistory = true) => {
+        tabs.forEach(item => {
+          const selected = item === tab;
+          item.setAttribute("aria-selected", String(selected));
+          item.tabIndex = selected ? 0 : -1;
+        });
+        panels.forEach(panel => { panel.hidden = panel.id !== tab.getAttribute("aria-controls"); });
+        if (updateHistory) history.pushState(null, "", tab.hash);
+        if (tab.getAttribute("aria-controls") === "route-map") ensureMapInitialized();
+        const tabList = tab.closest('[role="tablist"]');
+        if (tabList.scrollWidth > tabList.clientWidth) tab.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        window.scrollTo({ top: document.querySelector(".nav").offsetTop, behavior: "smooth" });
+      };
+      const activateFromHash = () => {
+        const tab = tabs.find(item => item.hash === location.hash) || tabs[0];
+        activateTab(tab, false);
+      };
+      tabs.forEach((tab, index) => {
+        tab.addEventListener("click", event => {
+          event.preventDefault();
+          activateTab(tab);
+        });
+        tab.addEventListener("keydown", event => {
+          if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+          event.preventDefault();
+          const nextIndex = event.key === "Home" ? 0
+            : event.key === "End" ? tabs.length - 1
+            : (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+          tabs[nextIndex].focus();
+          activateTab(tabs[nextIndex]);
+        });
+      });
+      window.addEventListener("popstate", activateFromHash);
+      activateFromHash();
+    }
+
+    function initializeDayAccordions() {
+      document.querySelectorAll(".day").forEach((dayElement, index) => {
+        const dayMain = dayElement.querySelector(".day-main");
+        const heading = dayMain.querySelector("h3");
+        const routeMeta = dayMain.querySelector(".route-meta");
+        const date = tripDates[index];
+        const summary = document.createElement("div");
+        const details = document.createElement("div");
+        const toggle = document.createElement("button");
+        summary.className = "day-summary";
+        details.className = "day-details";
+        details.id = `day-details-${index + 1}`;
+        details.hidden = true;
+        toggle.type = "button";
+        toggle.className = "day-toggle";
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-controls", details.id);
+        toggle.setAttribute("aria-label", `展开${date}具体行程`);
+        toggle.title = `展开${date}具体行程`;
+        toggle.textContent = "＋";
+        summary.append(heading, routeMeta, toggle);
+        details.append(...dayMain.children);
+        dayMain.append(summary, details);
+        summary.addEventListener("click", () => {
+          const expanded = toggle.getAttribute("aria-expanded") === "true";
+          toggle.setAttribute("aria-expanded", String(!expanded));
+          toggle.setAttribute("aria-label", `${expanded ? "展开" : "收起"}${date}具体行程`);
+          toggle.title = `${expanded ? "展开" : "收起"}${date}具体行程`;
+          toggle.textContent = expanded ? "＋" : "−";
+          details.hidden = expanded;
+        });
+      });
     }
 
     function initializeExpenseTables() {
@@ -927,8 +1021,18 @@
       }
     }
 
+    function ensureMapInitialized() {
+      if (mapInitializationStarted) {
+        map?.resize();
+        return;
+      }
+      mapInitializationStarted = true;
+      initializeMap(amapConfig);
+    }
+
+    initializeSectionTabs();
     initializeExpenseTables();
-    initializeMap(amapConfig);
+    initializeDayAccordions();
   </script>
 </body>
 </html>
