@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="乌鲁木齐往返，结合喀什、帕米尔高原与莎车的新疆9日攻略">
-  <title>山河与王城｜新疆9日旅行攻略 Ver.3 高德地图版</title>
+  <meta name="description" content="乌鲁木齐往返，结合喀什、帕米尔高原、莎车与天山天池的新疆10日攻略">
+  <title>山河与王城｜新疆10日旅行攻略 Ver.3 高德地图版</title>
   <style>
     :root { --ink:#20251f; --muted:#667066; --paper:#f5f2e9; --white:#fffef9; --line:#d7d8cc; --red:#b6412f; --green:#315c4c; --blue:#246c84; --gold:#c99132; --shadow:0 16px 45px rgba(34,40,31,.12); }
     * { box-sizing:border-box; }
@@ -25,8 +25,11 @@
     .nav-inner { min-height:58px; display:flex; align-items:center; justify-content:space-between; gap:18px; }
     .brand { font-weight:900; white-space:nowrap; text-decoration:none; }
     .links { min-width:0; display:flex; gap:22px; overflow-x:auto; font:700 14px "Microsoft YaHei",sans-serif; scrollbar-width:none; }
-    .links a { padding:20px 0; text-decoration:none; white-space:nowrap; }
-    .print-btn { border:0; background:var(--ink); color:white; width:36px; height:36px; cursor:pointer; flex:0 0 auto; }
+    .links a { position:relative; padding:20px 0; text-decoration:none; white-space:nowrap; }
+    .links a::after { content:""; position:absolute; right:0; bottom:13px; left:0; height:2px; background:var(--red); transform:scaleX(0); transform-origin:left; transition:transform .2s ease; }
+    .links a:hover::after,.links a:focus-visible::after { transform:scaleX(1); }
+    .print-btn { border:0; background:var(--ink); color:white; width:36px; height:36px; cursor:pointer; flex:0 0 auto; transition:background .2s ease,transform .2s ease; }
+    .print-btn:hover { background:var(--red); transform:translateY(-1px); }
     section { padding:82px 0; }
     .section-head { display:grid; grid-template-columns:180px 1fr; gap:24px; margin-bottom:36px; }
     .section-no { color:var(--red); font:800 14px "Microsoft YaHei",sans-serif; }
@@ -69,13 +72,14 @@
     .map-popup strong { display:block; color:var(--ink); }
     .map-popup span { color:var(--muted); }
     .days { display:grid; gap:22px; }
-    .day { display:grid; grid-template-columns:180px 1fr; gap:24px; padding:30px 0; border-top:1px solid var(--line); }
+    .day { display:grid; grid-template-columns:180px 1fr; gap:24px; padding:34px 0; border-top:1px solid var(--line); }
+    .day:last-child { border-bottom:1px solid var(--line); }
     .day-label { position:sticky; top:88px; align-self:start; }
     .day-label b { display:block; color:var(--red); font:900 34px/1 "Microsoft YaHei",sans-serif; }
     .day-label span { display:block; margin-top:8px; color:var(--muted); }
     .day-main h3 { margin:0 0 6px; font-size:clamp(24px,3vw,34px); line-height:1.35; }
     .route-meta { display:flex; flex-wrap:wrap; gap:9px; margin:12px 0 22px; font:700 13px "Microsoft YaHei",sans-serif; }
-    .tag { padding:5px 9px; color:var(--green); border:1px solid #9eb8ac; background:#f4faf6; }
+    .tag { padding:5px 9px; color:var(--green); border:1px solid #9eb8ac; background:#f4faf6; box-shadow:0 2px 0 rgba(49,92,76,.08); }
     .timeline { display:grid; grid-template-columns:82px 1fr; }
     .time,.event { padding:12px 0; border-bottom:1px dashed var(--line); }
     .time { color:var(--red); font:800 13px/1.8 "Microsoft YaHei",sans-serif; }
@@ -88,6 +92,20 @@
     .poi-status.closed { color:#9b382f; background:#fff0ed; }
     .poi-status.unknown,.poi-status.loading { color:#667066; background:#f1f1eb; }
     .tip { margin-top:18px; padding:16px 18px; color:#244b3f; background:#e9f1ed; border-left:3px solid var(--green); }
+    .daily-expenses { margin-top:22px; padding:20px; border:1px solid #c8cec4; border-top:3px solid var(--blue); background:var(--white); box-shadow:0 8px 24px rgba(34,40,31,.07); }
+    .expense-head { display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin-bottom:12px; }
+    .expense-head h4 { margin:0; font-size:18px; }
+    .expense-head span { color:var(--muted); font:13px "Microsoft YaHei",sans-serif; }
+    .expense-table-wrap { overflow-x:auto; }
+    .expense-table { width:100%; min-width:900px; table-layout:fixed; border-collapse:collapse; font-family:"Microsoft YaHei",sans-serif; }
+    .expense-table th { padding:8px 10px; color:var(--muted); text-align:left; border-bottom:1px solid var(--line); background:#f3f4ee; font-size:12px; }
+    .expense-table td { padding:10px; border-bottom:1px solid var(--line); }
+    .expense-entry { display:grid; gap:6px; }
+    .expense-table input,.expense-table select { width:100%; min-width:100px; padding:9px 10px; color:var(--ink); border:1px solid #c8cec4; background:white; font:14px "Microsoft YaHei",sans-serif; transition:border-color .15s ease,box-shadow .15s ease; }
+    .expense-table select { padding:7px 8px; color:var(--muted); }
+    .expense-table input:focus,.expense-table select:focus { outline:2px solid rgba(36,108,132,.25); border-color:var(--blue); }
+    .expense-total { display:flex; justify-content:flex-end; gap:10px; margin-top:14px; padding-top:12px; border-top:1px solid var(--line); font:700 14px "Microsoft YaHei",sans-serif; }
+    .expense-total output { min-width:84px; color:var(--red); text-align:right; font-size:17px; }
     .practical { color:white; background:var(--green); }
     .practical .section-no,.practical .section-intro { color:#c9ddd5; }
     .info-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
@@ -97,13 +115,26 @@
     .info li + li { margin-top:8px; }
     .info.wide { grid-column:span 2; }
     .checklist { columns:2; column-gap:32px; }
-    .budget-grid { display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:start; }
     .budget-table { width:100%; border-collapse:collapse; background:var(--white); box-shadow:var(--shadow); }
-    .budget-table th,.budget-table td { padding:15px 18px; text-align:left; border-bottom:1px solid var(--line); }
+    .budget-table th,.budget-table td { padding:12px 16px; text-align:left; border-bottom:1px solid var(--line); }
     .budget-table th { color:white; background:var(--ink); font-family:"Microsoft YaHei",sans-serif; }
     .budget-table td:last-child { text-align:right; white-space:nowrap; }
-    .budget-note { padding:26px; border:1px solid var(--line); }
-    .budget-note h3 { margin-top:0; }
+    .actual-budget { margin-bottom:30px; }
+    .actual-budget h3 { margin:0 0 6px; font-size:24px; }
+    .actual-budget > p { margin:0 0 16px; color:var(--muted); }
+    .actual-budget-wrap { overflow-x:auto; box-shadow:var(--shadow); }
+    .actual-budget .budget-table { min-width:680px; box-shadow:none; }
+    .actual-budget .budget-table th:not(:first-child),.actual-budget .budget-table td:not(:first-child) { text-align:right; }
+    .actual-budget .budget-table tbody:nth-of-type(2) tr:nth-child(even) { background:#f5f6f1; }
+    .actual-budget .budget-table tbody:first-of-type { color:#6d4617; background:#fff4dc; font-weight:700; }
+    .actual-budget .budget-table tbody tr:hover { background:#eef3ef; }
+    .actual-budget .budget-table tfoot td { color:white; background:var(--green); font-weight:800; }
+    .actual-budget .budget-table td.expense-error { color:#9b382f; background:#fff0ed; font-weight:800; }
+    .settlement { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:18px 20px; color:white; background:var(--ink); font-family:"Microsoft YaHei",sans-serif; }
+    .settlement span { color:#cbd2cc; font-size:13px; }
+    .settlement output { text-align:right; font-size:18px; font-weight:800; }
+    .settlement.error { color:#5f1812; border:2px solid #b6412f; background:#fff0ed; }
+    .settlement.error span { color:#8d3b34; }
     .sources { background:#e9e5d9; }
     .source-list { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
     .source-list a { display:flex; justify-content:space-between; gap:20px; padding:16px 18px; background:var(--white); border:1px solid var(--line); text-decoration:none; }
@@ -129,11 +160,15 @@
       .stat:nth-child(-n+2) { border-bottom:1px solid var(--line); }
       .day-label { position:static; display:flex; align-items:baseline; gap:12px; }
       .day-label span { margin:0; }
+      .expense-head { display:block; }
+      .expense-head span { display:block; margin-top:4px; }
+      .settlement { display:block; }
+      .settlement output { display:block; margin-top:6px; text-align:left; }
       .map-layout { grid-template-columns:1fr; min-height:0; }
       #trip-map { min-height:520px; }
       .map-panel { border-top:1px solid var(--line); border-left:0; }
       .map-controls { grid-template-columns:1fr; }
-      .info-grid,.budget-grid,.source-list { grid-template-columns:1fr; }
+      .info-grid,.source-list { grid-template-columns:1fr; }
       .info.wide { grid-column:auto; }
       .checklist { columns:1; }
       footer .wrap { display:block; }
@@ -161,17 +196,17 @@
 <body>
   <header class="hero">
     <div class="wrap hero-inner">
-      <p class="kicker">乌鲁木齐往返 · 帕米尔舒缓四日 · 莎车火车一日游 · 9天8晚</p>
+      <p class="kicker">乌鲁木齐往返 · 帕米尔舒缓四日 · 莎车火车一日游 · 天山天池 · 10天9晚</p>
       <h1>山河与王城</h1>
-      <p class="lead">首尾各留一天给乌鲁木齐，中段飞往喀什，进入白沙湖、慕士塔格峰与班迪尔蓝湖，再乘火车走进莎车的市井、音乐与王城遗迹。</p>
-      <div class="hero-facts"><span>帕米尔自驾 + 莎车火车</span><span>自驾约 850–950 km</span><span>最高活动区约 4,500 m</span><span>最佳体验 6–10月</span></div>
+      <p class="lead">首日留给乌鲁木齐落地，返程前安排天山天池；中段飞往喀什，进入白沙湖、慕士塔格峰与班迪尔蓝湖，再乘火车走进莎车的市井、音乐与王城遗迹。</p>
+      <div class="hero-facts"><span>帕米尔自驾 + 莎车火车</span><span>南疆自驾约 850–950 km</span><span>最高活动区约 4,500 m</span><span>最佳体验 6–10月</span></div>
     </div>
   </header>
 
   <nav class="nav" aria-label="页面导航">
     <div class="wrap nav-inner">
       <a class="brand" href="#top">南疆路书 Ver.3</a>
-      <div class="links"><a href="#overview">总览</a><a href="#route-map">行程地图</a><a href="#itinerary">每日行程</a><a href="#practical">行前准备</a><a href="#budget">预算</a><a href="#sources">实时核验</a></div>
+      <div class="links"><a href="#overview">总览</a><a href="#route-map">行程地图</a><a href="#itinerary">每日行程</a><a href="#practical">行前准备</a><a href="#budget">消费统计</a><a href="#sources">实时核验</a></div>
       <button class="print-btn" type="button" onclick="window.print()" aria-label="打印攻略" title="打印攻略">⎙</button>
     </div>
   </nav>
@@ -179,29 +214,29 @@
   <main id="top">
     <section class="summary" id="overview">
       <div class="wrap">
-        <div class="section-head"><div class="section-no">01 / 路线总览</div><div><h2>乌鲁木齐进出，南疆段不赶路</h2><p class="section-intro">首日抵达乌鲁木齐，次日飞喀什；塔县连住三晚，蓝湖与返程拆开。莎车采用火车一日游，最后从喀什飞回乌鲁木齐并留一晚缓冲。</p></div></div>
+        <div class="section-head"><div class="section-no">01 / 路线总览</div><div><h2>乌鲁木齐进出，南疆段不赶路</h2><p class="section-intro">首日抵达乌鲁木齐，次日飞喀什；塔县连住三晚，蓝湖与返程拆开。莎车采用火车一日游，最后从喀什飞回乌鲁木齐，安排天山天池后再返程。</p></div></div>
         <div class="stats">
-          <div class="stat"><strong>9天8晚</strong><small>乌鲁木齐2晚 · 喀什3晚 · 塔县3晚</small></div>
-          <div class="stat"><strong>约17h</strong><small>累计驾驶参考，检查与堵车另计</small></div>
+          <div class="stat"><strong>10天9晚</strong><small>乌鲁木齐3晚 · 喀什3晚 · 塔县3晚</small></div>
+          <div class="stat"><strong>约17h</strong><small>南疆租车段累计驾驶参考</small></div>
           <div class="stat"><strong>2个重心</strong><small>帕米尔山河 · 莎车人文</small></div>
-          <div class="stat"><strong>¥5.5k–10.3k</strong><small>2人人均参考，不含往返新疆大交通</small></div>
+          <div class="stat"><strong>4段航班</strong><small>杭州、乌鲁木齐与喀什衔接</small></div>
         </div>
-        <p class="route-line">乌鲁木齐 → 喀什 → 白沙湖 → 喀拉库勒湖 → 塔县 → 慕士塔格冰川 → 班迪尔蓝湖 → 塔县 → 喀什 ⇄ 莎车 → 乌鲁木齐</p>
-        <div class="notice"><div class="notice-mark">!</div><div><strong>三段大交通必须按票面北京时间衔接</strong><p>Day 2 乌鲁木齐飞喀什、Day 7 莎车火车往返、Day 8 喀什飞乌鲁木齐。订票时优先保证 Day 2 中午前抵达喀什、Day 8 傍晚前抵达乌鲁木齐；火车车次以12306、航班以航空公司通知为准。</p></div></div>
+        <p class="route-line">乌鲁木齐 → 喀什 → 白沙湖 → 喀拉库勒湖 → 塔县 → 慕士塔格冰川 → 班迪尔蓝湖 → 塔县 → 喀什 ⇄ 莎车 → 乌鲁木齐 ⇄ 天山天池</p>
+        <div class="notice"><div class="notice-mark">!</div><div><strong>四段航班与莎车火车均按票面北京时间衔接</strong><p>9月4日长龙航空 GJ8967 杭州飞乌鲁木齐；9月5日南航 CZ6805 乌鲁木齐飞喀什；9月11日国航 CA9656 喀什飞乌鲁木齐；9月13日天津航空 GS7517 预计08:10从乌鲁木齐起飞、14:50抵达杭州。9月10日莎车火车往返，车次以12306为准；航站楼和航班动态以航空公司最新通知为准。</p></div></div>
       </div>
     </section>
 
     <section class="map-section" id="route-map">
       <div class="wrap">
-        <div class="section-head"><div class="section-no">02 / 行程地图</div><div><h2>九天轨迹，一张图看清</h2><p class="section-intro">点击右侧日期只看当天路线。Day 2、8为航班示意，Day 7为火车示意；Day 3–6显示高德驾车路线。</p></div></div>
+        <div class="section-head"><div class="section-no">02 / 行程地图</div><div><h2>十天轨迹，一张图看清</h2><p class="section-intro">点击右侧日期只看当天路线。9月4日、5日、11日和13日为航班示意，9月10日为火车示意，9月12日为旅行团大巴示意；9月6日至9日显示高德驾车路线。</p></div></div>
         <div class="map-layout">
-          <div id="trip-map" role="region" aria-label="新疆九日行程交互地图"></div>
+          <div id="trip-map" role="region" aria-label="新疆十日行程交互地图"></div>
           <aside class="map-panel" aria-label="地图路线筛选">
             <h3>选择日期</h3>
-            <p>高德地图版。Day 3–6 沿可导航道路规划，跨城航班与火车为点位示意。</p>
+            <p>高德地图版。9月6日至9日沿可导航道路规划，航班、火车与旅行团大巴为点位示意。</p>
             <div class="map-status" id="map-status">正在加载高德地图…</div>
             <div class="map-controls" id="map-controls" hidden></div>
-            <div class="map-note">实线为高德驾车规划；虚线为航班、火车或规划失败后的点位示意。路线不替代实时导航、12306及航空公司信息。</div>
+            <div class="map-note">实线为高德驾车规划；虚线为航班、火车、旅行团大巴或规划失败后的点位示意。路线不替代实时导航、12306、航空公司及旅行社通知。</div>
           </aside>
         </div>
       </div>
@@ -209,97 +244,111 @@
 
     <section id="itinerary">
       <div class="wrap">
-        <div class="section-head"><div class="section-no">03 / 每日行程</div><div><h2>从天山门户，到帕米尔与王城</h2><p class="section-intro"><strong>以下全部为北京时间。</strong>新疆生活节奏通常较晚，但机票、火车、预约及官方通知均按北京时间执行。景点状态由高德 POI 在线查询，仅供行前筛选，最终以景区当天公告和现场管制为准。</p></div></div>
+        <div class="section-head"><div class="section-no">03 / 每日行程</div><div><h2>从天山门户，到帕米尔与王城</h2><p class="section-intro"><strong>以下全部为北京时间。</strong>新疆生活节奏通常较晚，但机票、火车、预约及官方通知均按北京时间执行。景点状态首次由高德 POI 查询后固定缓存在当前浏览器，不会随刷新重复查询；最终以景区当天公告和现场管制为准。</p></div></div>
         <div class="days">
           <article class="day">
-            <div class="day-label"><b>DAY 1</b><span>住乌鲁木齐</span></div>
-            <div class="day-main"><h3>夜抵乌鲁木齐｜入住休息</h3><div class="route-meta"><span class="tag">夜间抵达</span><span class="tag">接机入住</span><span class="tag">不安排景点</span></div><div class="timeline">
-              <div class="time">抵达后</div><div class="event"><strong>机场前往酒店、办理入住</strong><p>乌鲁木齐机场到市区需预留交通时间，落地后直接前往酒店，不再安排博物馆或大巴扎。</p></div>
+            <div class="day-label"><b>9月4日</b><span>住乌鲁木齐</span></div>
+            <div class="day-main"><h3>杭州飞乌鲁木齐｜长龙航空 GJ8967</h3><div class="route-meta"><span class="tag">长龙航空 GJ8967 17:45 - 22:55</span><span class="tag">杭州 → 乌鲁木齐</span></div><div class="timeline">
+              <div class="time">17:45</div><div class="event"><strong>搭乘长龙航空 GJ8967 前往乌鲁木齐</strong><p>提前到达杭州萧山国际机场，复核出发航站楼、值机截止时间和行李额度。</p></div>
+              <div class="time">预计22:55</div><div class="event"><strong>抵达乌鲁木齐机场，前往酒店入住</strong><p>领取行李后通常已接近午夜，优先住机场附近或交通方便的酒店，不再前往市中心游览。</p></div>
               <div class="time">入住后</div><div class="event"><strong>简单晚餐、整理行李</strong><p>优先选择酒店附近仍营业的餐厅或提前准备简餐，不跨城区寻找热门店。</p></div>
-              <div class="time">睡前</div><div class="event"><strong>确认次日航班</strong><p>核对航站楼、值机要求和前往机场方式，设置出发时间后尽早休息。</p></div>
-            </div><div class="tip">Day 1 只负责顺利落地和休息，为次日飞喀什保留睡眠与转场余量。</div></div>
+              <div class="time">睡前</div><div class="event"><strong>确认南航 CZ6805</strong><p>核对航站楼和行李要求；09:50起飞，建议07:30前抵达机场，据酒店车程倒推退房时间。</p></div>
+            </div><div class="tip">9月4日只负责顺利落地和休息，为次日飞喀什保留睡眠与转场余量。</div></div>
           </article>
 
           <article class="day">
-            <div class="day-label"><b>DAY 2</b><span>住喀什</span></div>
-            <div class="day-main"><h3>飞抵喀什｜古城轻量半日</h3><div class="route-meta"><span class="tag">12:00抵达</span><span class="tag">可选景点</span><span class="tag">轻松步行</span></div><div class="timeline">
-              <div class="time">12:00</div><div class="event"><strong>抵达喀什机场</strong><p>取行李、取车并前往酒店；国内航班时刻和航站楼仍以航空公司通知为准。</p></div>
-              <div class="time">13:00–14:30</div><div class="event"><strong>入住、午餐、补给</strong><p>检查车辆、轮胎和备胎，购买饮水与路餐，确认边境通行证、冰川预约及次日道路状态。</p></div>
-              <div class="time">15:00–18:30</div><div class="event"><strong>可选：<span class="poi-name" data-poi-key="oldTown">喀什古城</span> + <span class="poi-name" data-poi-key="idKah">艾提尕尔广场</span></strong><p>从古城街巷慢逛至艾提尕尔广场，可加入百年老茶馆或手工艺店；<span class="poi-name" data-poi-key="idKahMosque">艾提尕尔清真寺</span>是否入内以现场开放和礼仪要求为准。</p></div>
-              <div class="time">19:00前后</div><div class="event"><strong>可选：<span class="poi-name" data-poi-key="highPlatform">高台民居</span></strong><p>仅在出行时确认恢复开放后前往；否则只看外围，或继续留在古城。</p></div>
-              <div class="time">20:30以后</div><div class="event"><strong>古城晚餐后休息</strong><p>第二天需要长途驾驶，避免饮酒与熬夜。</p></div>
-            </div><div class="tip"><strong>选择顺序：</strong>优先喀什古城，其次艾提尕尔广场；高台民居取决于开放情况。古城在 Day 8 还有补看时间，不必赶场。</div></div>
+            <div class="day-label"><b>9月5日</b><span>住喀什</span></div>
+            <div class="day-main"><h3>飞抵喀什｜南航 CZ6805</h3><div class="route-meta"><span class="tag">南航 CZ6805 09:50 - 11:55</span><span class="tag">乌鲁木齐 → 喀什</span></div><div class="timeline">
+              <div class="time">09:50</div><div class="event"><strong>搭乘南航 CZ6805 飞往喀什</strong><p>提前到达乌鲁木齐机场，航站楼、值机截止时间和行李要求以南航最新通知为准。</p></div>
+              <div class="time">11:55–13:30</div><div class="event"><strong>抵达喀什、取车</strong><p>领取行李、办理租车并验车，通常需60～90分钟；留存车身、油表和里程照片，不把取车时间压缩到半小时。</p></div>
+              <div class="time">13:30–14:40</div><div class="event"><strong>入住、简便午餐、补给</strong><p>若酒店尚不能入住先寄存行李。购买饮水与路餐，并一次买好供9月6、7日使用的独立包装巧克力约100～150克（两人份）；复杂采购留到晚餐后。</p></div>
+              <div class="time">15:00–17:00</div><div class="event"><strong>参观<span class="poi-name" data-poi-key="kashgarMuseum">喀什地区博物馆</span></strong><p>9月5日为周六，常规开放日可安排约2小时；提前预约并再次确认临时闭馆公告。若15:30仍未到馆则缩短参观，不晚于停止入馆时间抵达。</p></div>
+              <div class="time">17:30–20:00</div><div class="event"><strong><span class="poi-name" data-poi-key="oldTown">喀什古城</span> + <span class="poi-name" data-poi-key="idKah">艾提尕尔广场</span></strong><p>从古城街巷慢逛至艾提尕尔广场；<span class="poi-name" data-poi-key="idKahMosque">艾提尕尔清真寺</span>只在仍处游客开放时入内，否则仅看外观，不挤占博物馆时间。</p></div>
+              <div class="time">本日不安排</div><div class="event"><strong>可选：<span class="poi-name" data-poi-key="highPlatform">高台民居</span></strong><p>取车与博物馆衔接已较紧，且开放状态需复核；仅留作9月11日上午备选。</p></div>
+              <div class="time">20:30以后</div><div class="event"><strong>古城晚餐后休息</strong><p>9月6日需要长途驾驶，避免饮酒与熬夜。</p></div>
+            </div><div class="tip"><strong>选择顺序：</strong>优先喀什地区博物馆和喀什古城，其次艾提尕尔广场；高台民居取决于开放情况。古城在9月11日还有补看时间，不必赶场。</div></div>
           </article>
 
           <article class="day">
-            <div class="day-label"><b>DAY 3</b><span>住塔县</span></div>
+            <div class="day-label"><b>9月6日</b><span>住塔县</span></div>
             <div class="day-main"><h3>驶入帕米尔｜白沙湖与慕士塔格</h3><div class="route-meta"><span class="tag" data-distance-day="3">约300km</span><span class="tag">驾驶5–7h</span><span class="tag">海拔升至约3,100m</span></div><div class="timeline">
-              <div class="time">08:00–08:30</div><div class="event"><strong>喀什出发，沿 G314 向西</strong><p>这是当地较早的出发时间，需前一晚准备早餐和路餐。加满油，检查站备好全部证件原件。</p></div>
+              <div class="time">08:00–08:30</div><div class="event"><strong>喀什出发，沿 G314 向西</strong><p>这是当地较早的出发时间，前一晚备好两人份早餐和路餐：新疆馕1～2张、熟鸡蛋2个、独立包装牛肉干或熟食、苹果或香蕉2份，再配一小袋巴旦木与葡萄干。加满油，带足饮水并备好证件原件。</p></div>
               <div class="time">10:30–11:00</div><div class="event"><strong><span class="poi-name" data-poi-key="oytagh">奥依塔克红山谷</span>短停</strong><p>只在正规停车区或安全停车带停靠，不在弯道和落石区停车拍照。</p></div>
-              <div class="time">13:00–14:00</div><div class="event"><strong><span class="poi-name" data-poi-key="baisha">白沙湖</span></strong><p>按现场标识进入，停留约45～60分钟；不要为了南北岸都打卡拖慢全天节奏。</p></div>
+              <div class="time">13:00–14:00</div><div class="event"><strong><span class="poi-name" data-poi-key="baisha">白沙湖</span> + 路餐</strong><p>按现场标识进入，停留约45～60分钟并吃自带午餐。布伦口及景区周边简餐只作备选，不以临时摊点或餐厅营业为前提。</p></div>
               <div class="time">15:30–16:30</div><div class="event"><strong><span class="poi-name" data-poi-key="karakul">喀拉库勒湖</span></strong><p>天气好时可同看公格尔与慕士塔格峰。风大体感低，外套放在随手可取处。</p></div>
               <div class="time">19:00–20:00</div><div class="event"><strong>抵达塔县</strong><p>不再强求塔合曼湿地；先入住并按当地节奏用晚餐，之后不剧烈运动、不洗过热长澡。</p></div>
-            </div><div class="tip">当天宁可少停一个点，也不要摸黑进塔县。头痛、恶心或气促持续加重时应停止上升并尽快就医。</div></div>
+            </div><div class="tip"><strong>路餐建议：</strong>馕、巴旦木和葡萄干最有新疆特色，也耐放好携带；烤包子如当天早晨现买应尽早吃，不留到下午。白沙湖、喀拉库勒湖一带的简餐或小摊只作备选。</div></div>
           </article>
 
           <article class="day">
-            <div class="day-label"><b>DAY 4</b><span>住塔县</span></div>
+            <div class="day-label"><b>9月7日</b><span>住塔县</span></div>
             <div class="day-main"><h3>冰川日｜靠近“冰山之父”</h3><div class="route-meta"><span class="tag" data-distance-day="4">约160–220km</span><span class="tag">区间车+徒步</span><span class="tag">高海拔活动</span></div><div class="timeline">
-              <div class="time">09:00–09:30</div><div class="event"><strong>前往<span class="poi-name" data-poi-key="glacier">慕士塔格冰川公园</span></strong><p>按当天开放和首班区间车倒推出发时间；提前核验预约和售票，不进入未开放冰川或野线。</p></div>
-              <div class="time">11:00–15:00</div><div class="event"><strong>区间车、徒步与简餐</strong><p>常见体验需约4小时，旺季排队应再留余量。携带保温水与高能量零食，不适时不要硬撑到观景台。</p></div>
+              <div class="time">09:00–09:30</div><div class="event"><strong>前往<span class="poi-name" data-poi-key="glacier">慕士塔格冰川公园</span></strong><p>出发前在塔县备好两人份路餐：馕或面包、熟鸡蛋2个、独立包装牦牛肉干、香蕉2根和少量巧克力。按当天开放和首班区间车倒推出发时间，不进入未开放冰川或野线。</p></div>
+              <div class="time">11:00–15:00</div><div class="event"><strong>区间车、徒步与自带午餐</strong><p>常见体验需约4小时，旺季排队应再留余量。牦牛肉干是塔县特色，但较咸，只作少量蛋白质补充；搭配馕、香蕉、保温水和电解质饮料，不把游客中心餐饮当作保障。</p></div>
               <div class="time">17:00前后</div><div class="event"><strong>返回塔县</strong><p>若上午因天气关闭，不长时间等待，改为<span class="poi-name" data-poi-key="taghman">塔合曼湿地</span>或县城休息。</p></div>
               <div class="time">18:30以后</div><div class="event"><strong>返回酒店休息</strong><p>冰川徒步后不再叠加景点，石头城与金草滩留到次日傍晚。</p></div>
-            </div><div class="tip">冰川日只安排一个高海拔主目标，为次日蓝湖与县城游览保留体力。氧气只能短时辅助，不能替代下撤和医疗。</div></div>
+            </div><div class="tip"><strong>路餐建议：</strong>每人按“半张至1张馕 + 1个蛋 + 少量牦牛肉干 + 1根香蕉 + 少量巧克力”准备。避免大量奶制品、油腻熟食和只吃甜食；不适时不要硬撑，氧气不能替代下撤和医疗。</div></div>
           </article>
 
           <article class="day">
-            <div class="day-label"><b>DAY 5</b><span>住塔县</span></div>
+            <div class="day-label"><b>9月8日</b><span>住塔县</span></div>
             <div class="day-main"><h3>蓝湖与古城遗址｜自然、人文各半日</h3><div class="route-meta"><span class="tag" data-distance-day="5">约85–105km</span><span class="tag">驾驶2–3h</span><span class="tag">蓝湖 + 石头城金草滩</span></div><div class="timeline">
-              <div class="time">09:30前后</div><div class="event"><strong>塔县出发</strong><p>不用退房，轻装前往班迪尔蓝湖。先确认当天道路开放情况，高反未缓解时留在县城休息。</p></div>
+              <div class="time">09:30前后</div><div class="event"><strong>塔县出发</strong><p>不用退房，轻装前往班迪尔蓝湖，随车带一份应急路餐和饮水。先确认当天道路开放情况，高反未缓解时留在县城休息。</p></div>
               <div class="time">10:30–12:30</div><div class="event"><strong><span class="poi-name" data-poi-key="bandir">班迪尔蓝湖</span></strong><p>旅游攻略多建议在日照较好的上午至中午观湖。沿允许通行道路抵达，在正规位置停车；风大时缩短停留。</p></div>
-              <div class="time">13:30前后</div><div class="event"><strong>返回塔县午餐、休息</strong><p>下午不再安排远郊山路，补水并休息约2小时，让司机和高原徒步后的身体恢复。</p></div>
-              <div class="time">停止入园前</div><div class="event"><strong><span class="poi-name" data-poi-key="stoneCity">石头城遗址</span> + <span class="poi-name" data-poi-key="goldenGrassland">金草滩湿地</span></strong><p>两处相邻，可连游约2～3小时；傍晚光线更柔和。按当天开放和停止入园时间倒推到达，不为等日落滞留到闭园后。</p></div>
-              <div class="time">20:30以后</div><div class="event"><strong>返回县城晚餐</strong><p>整理次日返喀什的行李，提前加油并再次检查 G314 路况。</p></div>
-            </div><div class="tip"><strong>推荐组合：</strong>蓝湖看高原水色，石头城与金草滩补足历史和湿地景观。若高反或天气不佳，优先保留县城边的石头城与金草滩，取消蓝湖远途。</div></div>
+              <div class="time">13:30前后</div><div class="event"><strong>返回塔县午餐、休息</strong><p>班迪尔蓝湖为原生态自然点，不依赖现场餐饮；正常情况下回塔县县城吃正餐，若堵车或管制则先吃随车路餐。下午休息约2小时。</p></div>
+              <div class="time">16:00–19:00</div><div class="event"><strong><span class="poi-name" data-poi-key="stoneCity">石头城遗址</span> + <span class="poi-name" data-poi-key="goldenGrassland">金草滩湿地</span></strong><p>两处相邻，联游约2～3小时；最晚15:30结束午休并出发。若当天停止入园早于16:00，则压缩午休并提前到达。</p></div>
+              <div class="time">19:30以后</div><div class="event"><strong>返回县城晚餐</strong><p>不为等日落滞留到闭园后；整理次日返喀什的行李，提前加油并再次检查 G314 路况。</p></div>
+            </div><div class="tip"><strong>午餐结论：</strong>计划回塔县县城吃，不必带完整午餐，但车内至少留馕或面包、能量棒和水作为延误备用。若高反或天气不佳，取消蓝湖远途。</div></div>
           </article>
 
           <article class="day">
-            <div class="day-label"><b>DAY 6</b><span>住喀什</span></div>
+            <div class="day-label"><b>9月9日</b><span>住喀什</span></div>
             <div class="day-main"><h3>帕米尔归途｜塔县从容返喀什</h3><div class="route-meta"><span class="tag" data-distance-day="6">约290–310km</span><span class="tag">驾驶5–6h</span><span class="tag">只走主路</span></div><div class="timeline">
-              <div class="time">09:00前后</div><div class="event"><strong>塔县退房、加满油</strong><p>沿 G314 原路返回喀什。第2天已游览主要湖泊，返程不再为重复打卡频繁停车。</p></div>
-              <div class="time">12:30–13:30</div><div class="event"><strong>沿途午餐与司机休息</strong><p>选择正规停车点补给，检查车辆和天气；每连续驾驶约2小时主动休息一次。</p></div>
-              <div class="time">16:00–17:30</div><div class="event"><strong>抵达喀什</strong><p>办理入住后归还车辆或确认次日停车安排，晚上只安排轻松用餐。</p></div>
-              <div class="time">20:30以后</div><div class="event"><strong>古城晚餐</strong><p>为第7天早班火车预留睡眠时间，并再次核对车站、车次和身份证件。</p></div>
-            </div><div class="tip">遇到检查、落石天气或临时管制时，宁可晚到喀什，也不要压缩休息时间或摸黑超车。</div></div>
+              <div class="time">09:00前后</div><div class="event"><strong>塔县退房、加满油</strong><p>沿 G314 原路返回喀什，出发前在县城买好两人份应急路餐和饮水。9月6日已游览主要湖泊，返程不再为重复打卡频繁停车。</p></div>
+              <div class="time">12:30–13:30</div><div class="event"><strong>沿途午餐与司机休息</strong><p>遇到确认营业且方便安全停车的正规餐饮可吃简餐，否则直接吃随车路餐，不为找饭店绕路或赶路；每连续驾驶约2小时主动休息一次。</p></div>
+              <div class="time">16:00–17:30</div><div class="event"><strong>抵达喀什、归还租车</strong><p>先按租车公司要求加满油并留存油表、里程和车身照片，再到约定门店或地点验车还车；完成后打车前往酒店。</p></div>
+              <div class="time">20:30以后</div><div class="event"><strong>古城晚餐</strong><p>为9月10日早班火车预留睡眠时间，并再次核对车站、车次和身份证件。</p></div>
+            </div><div class="tip"><strong>午餐结论：</strong>沿途可能找到简餐，但不能保证时间和营业，至少带一顿应急路餐。租期截至9月9日，预留约1小时验车；遇到检查、天气或管制时及时联系租车公司。</div></div>
           </article>
 
           <article class="day">
-            <div class="day-label"><b>DAY 7</b><span>住喀什</span></div>
+            <div class="day-label"><b>9月10日</b><span>住喀什</span></div>
             <div class="day-main"><h3>火车一日游｜莎车王城精华</h3><div class="route-meta"><span class="tag">火车往返</span><span class="tag">单程通常2–3h</span><span class="tag">不在莎车住宿</span></div><div class="timeline">
               <div class="time">按12306车次</div><div class="event"><strong>乘早班火车前往莎车</strong><p>优先选择能在11:00前抵达的车次，提前到喀什站安检候车；具体运行时间和开售日期以12306为准。</p></div>
               <div class="time">抵达后</div><div class="event"><strong>前往<span class="poi-name" data-poi-key="tomb">叶尔羌汗国王陵</span></strong><p>从车站打车前往，了解阿曼尼莎汗与十二木卡姆背景；开放和停止入园时间以当天公告为准。</p></div>
               <div class="time">13:30–14:30</div><div class="event"><strong>莎车午餐</strong><p>尝试缸子肉、烤包子或抓饭，餐后步行或打车前往老城与非遗博览园。</p></div>
-              <div class="time">15:00–18:00</div><div class="event"><strong><span class="poi-name" data-poi-key="shacheOldTown">莎车老城</span> / <span class="poi-name" data-poi-key="heritagePark">非遗博览园</span></strong><p>两者按开放和演出场次取舍，不为看全所有节目冒误车风险。</p></div>
-              <div class="time">按返程车次</div><div class="event"><strong>火车返回喀什</strong><p>至少提前45分钟从核心区域前往莎车站，回程票与去程票同时购买。</p></div>
-            </div><div class="tip"><strong>订票条件：</strong>只有当去程能在上午抵达、返程在18:00后发车时才适合一日游；班次不匹配就减少景点，不改为当天自驾往返。</div></div>
+              <div class="time">15:00–返程前75分钟</div><div class="event"><strong><span class="poi-name" data-poi-key="shacheOldTown">莎车老城</span> / <span class="poi-name" data-poi-key="heritagePark">非遗博览园</span></strong><p>两者按开放和演出场次取舍；无论节目是否结束，都按返程车次倒推离开时间。</p></div>
+              <div class="time">发车前75分钟</div><div class="event"><strong>前往莎车站，火车返回喀什</strong><p>预留约30分钟市内交通和至少45分钟安检候车；回程票与去程票同时购买。</p></div>
+            </div><div class="tip"><strong>订票条件：</strong>去程应在11:00前抵达，返程优先选择18:30后发车；若班次更早就减少老城或演出时间，不改为当天自驾往返。</div></div>
           </article>
 
           <article class="day">
-            <div class="day-label"><b>DAY 8</b><span>住乌鲁木齐</span></div>
-            <div class="day-main"><h3>喀什收尾｜飞回乌鲁木齐</h3><div class="route-meta"><span class="tag">机动半日</span><span class="tag">喀什飞乌鲁木齐</span><span class="tag">航空缓冲</span></div><div class="timeline">
-              <div class="time">航班前</div><div class="event"><strong><span class="poi-name" data-poi-key="oldTown">喀什古城</span>查漏补缺</strong><p>可选艾提尕尔周边、东区街巷或咖啡馆；若乘早班机则直接取消。</p></div>
-              <div class="time">按航班时间</div><div class="event"><strong>前往喀什机场、飞乌鲁木齐</strong><p>预留还车、加油和安检时间，建议选择傍晚前抵达乌鲁木齐的航班。</p></div>
-              <div class="time">落地后</div><div class="event"><strong>入住乌鲁木齐</strong><p>当天不安排远郊项目；早到可在酒店附近用餐或散步。</p></div>
+            <div class="day-label"><b>9月11日</b><span>住乌鲁木齐</span></div>
+            <div class="day-main"><h3>喀什收尾｜国航 CA9656 飞乌鲁木齐</h3><div class="route-meta"><span class="tag">国航 CA9656 13:55 - 16:00</span><span class="tag">喀什 → 乌鲁木齐</span></div><div class="timeline">
+              <div class="time">08:30–10:30</div><div class="event"><strong><span class="poi-name" data-poi-key="oldTown">喀什古城</span>查漏补缺</strong><p>只安排艾提尕尔周边、东区街巷或咖啡馆；高台民居仅在确认开放且10:30前可结束时前往。</p></div>
+              <div class="time">10:30–11:00</div><div class="event"><strong>返回酒店取行李、打车去机场</strong><p>13:55起飞，建议11:30前抵达喀什机场，为市区交通、值机和安检留足时间。</p></div>
+              <div class="time">13:55</div><div class="event"><strong>搭乘国航 CA9656 飞往乌鲁木齐</strong><p>租车已于9月9日归还，不在上午临时增加远距离景点。</p></div>
+              <div class="time">预计16:00</div><div class="event"><strong>抵达乌鲁木齐、办理入住</strong><p>当天不安排远郊项目；到达酒店后可在附近用餐或散步。</p></div>
             </div><div class="tip">单独住一晚乌鲁木齐可以吸收喀什航班延误，避免与最终离疆航班做高风险同日衔接。</div></div>
           </article>
 
           <article class="day">
-            <div class="day-label"><b>DAY 9</b><span>乌鲁木齐返程</span></div>
-            <div class="day-main"><h3>乌鲁木齐收尾｜按离疆航班取舍</h3><div class="route-meta"><span class="tag">市区半日</span><span class="tag">弹性安排</span><span class="tag">返程日</span></div><div class="timeline">
-              <div class="time">上午</div><div class="event"><strong><span class="poi-name" data-poi-key="xinjiangMuseum">新疆维吾尔自治区博物馆</span>或<span class="poi-name" data-poi-key="grandBazaar">新疆国际大巴扎</span>二选一</strong><p>博物馆需提前预约并核对闭馆日；离疆航班较早时两者都取消。</p></div>
-              <div class="time">航班前</div><div class="event"><strong>返回酒店取行李</strong><p>不安排天山天池等远郊景点，避免道路拥堵影响返程。</p></div>
-              <div class="time">至少提前2h</div><div class="event"><strong>前往机场</strong><p>按实际航站楼和航空公司要求增加余量，旺季、托运行李或早晚高峰再提前。</p></div>
-            </div><div class="tip">若最终航班较早，Day 9 就只承担早餐与前往机场；乌鲁木齐景点不应优先于准时返程。</div></div>
+            <div class="day-label"><b>9月12日</b><span>住乌鲁木齐</span></div>
+            <div class="day-main"><h3>天山一日｜跟团游天池与博格达雪峰</h3><div class="route-meta"><span class="tag">旅行团大巴往返</span><span class="tag">景区区间车</span><span class="tag">山地温差大</span></div><div class="timeline">
+              <div class="time">按集合通知</div><div class="event"><strong>前往集合点，乘旅行团大巴前往<span class="poi-name" data-poi-key="tianchi">天山天池景区</span></strong><p>前一晚与旅行社确认集合时间、地点、车牌和导游电话，并核对团费是否包含门票、区间车、午餐及可选自费项目。</p></div>
+              <div class="time">10:00前后</div><div class="event"><strong>抵达游客中心、换乘区间车</strong><p>按景区规定乘车进入核心区，旺季排队需留余量，门票、区间车和索道开放以当天公告为准。</p></div>
+              <div class="time">11:00–16:00</div><div class="event"><strong>天池环湖与观景</strong><p>以天池主景区和博格达峰观景为主，根据体力选择短距离栈道；9月山区可能骤冷，随身带防风保暖层和雨具。</p></div>
+              <div class="time">按团队安排</div><div class="event"><strong>集合乘车返回乌鲁木齐</strong><p>严格遵守导游通知的集合时间，确认返程下车点；回到市区后在酒店附近用餐并整理次日行李。</p></div>
+            </div><div class="tip"><strong>报团核对：</strong>优先选择合同、保险和退改规则清晰的正规旅行社，确认是否存在购物店或强制自费。若因大风、降雪或景区关闭取消，改为市区博物馆与大巴扎。</div></div>
+          </article>
+
+          <article class="day">
+            <div class="day-label"><b>9月13日</b><span>乌鲁木齐返程</span></div>
+            <div class="day-main"><h3>乌鲁木齐飞杭州｜天津航空 GS7517</h3><div class="route-meta"><span class="tag">天津航空 GS7517 08:10 - 14:50</span><span class="tag">经停万州</span></div><div class="timeline">
+              <div class="time">05:30前后</div><div class="event"><strong>退房并前往乌鲁木齐机场</strong><p>08:10起飞且有托运行李，建议06:30前抵达机场；前一晚完成行李整理并请酒店准备简便早餐。</p></div>
+              <div class="time">08:10</div><div class="event"><strong>搭乘天津航空 GS7517 起飞</strong><p>航班经停万州，核对实际航站楼、值机截止时间、行李额度及经停安排。</p></div>
+              <div class="time">预计14:50</div><div class="event"><strong>抵达杭州萧山国际机场</strong><p>落地时间和航班动态以天津航空当天通知为准。</p></div>
+            </div><div class="tip">9月13日只承担返程，不把天池等远郊项目放到航班当天。</div></div>
           </article>
         </div>
       </div>
@@ -307,12 +356,12 @@
 
     <section class="practical" id="practical">
       <div class="wrap">
-        <div class="section-head"><div class="section-no">04 / 行前准备</div><div><h2>航班衔接、证件与高反优先</h2><p class="section-intro">增加乌鲁木齐前后缓冲后，单日压力更低；仍需提前确认两段疆内航班、莎车火车、边境证和冰川开放。</p></div></div>
+        <div class="section-head"><div class="section-no">04 / 行前准备</div><div><h2>航班衔接、证件与高反优先</h2><p class="section-intro">增加乌鲁木齐前后缓冲后，单日压力更低；仍需提前确认 GJ8967、CZ6805、CA9656、GS7517 四段航班，以及莎车火车、天池旅行团、边境证和冰川开放。</p></div></div>
         <div class="info-grid">
-          <div class="info wide"><h3>证件与预约｜边境通行证怎么办</h3><ul><li><strong>什么时候办：</strong>建议出发前1～2周启动，不把抵达喀什后现场办理当作确定方案</li><li><strong>优先路径：</strong>到户籍所在地县级公安机关或指定派出所申请“边境管理区通行证”</li><li><strong>常见材料：</strong>身份证、申请表、近期证件照；补充材料以受理点最新要求为准</li><li><strong>目的地填写：</strong>本版只需重点覆盖“喀什地区塔什库尔干塔吉克自治县”；已取消红其拉甫和木吉</li><li><strong>领取检查：</strong>核对姓名、身份证号、有效期及通行区域，全程携带身份证和纸质通行证原件</li><li><strong>现场备选：</strong>可拨打12367咨询政策，并向喀什当地公安机关确认最新办证点</li><li><strong>预约：</strong>另行核对慕士塔格冰川、莎车场馆及演出的开放与预约信息</li></ul></div>
+          <div class="info wide"><h3>证件与预约｜边境通行证怎么办</h3><ul><li><strong>什么时候办：</strong>建议出发前1～2周启动，不把抵达喀什后现场办理当作确定方案</li><li><strong>优先路径：</strong>到户籍所在地县级公安机关或指定派出所申请“边境管理区通行证”</li><li><strong>常见材料：</strong>身份证、申请表、近期证件照；补充材料以受理点最新要求为准</li><li><strong>目的地填写：</strong>“喀什地区”，“塔什库尔干塔吉克自治县”</li><li><strong>领取检查：</strong>核对姓名、身份证号、有效期及通行区域，全程携带身份证和纸质通行证原件</li><li><strong>现场备选：</strong>可拨打12367咨询政策，并向喀什当地公安机关确认最新办证点</li><li><strong>预约：</strong>另行核对慕士塔格冰川、莎车场馆及演出的开放与预约信息</li></ul></div>
           <div class="info"><h3>高原健康</h3><ul><li>喀什约1,300m，塔县约3,100m，冰川活动区更高</li><li>前48小时慢走、少酒，不洗过热长澡</li><li>严重头痛、静息气促、意识异常、步态不稳应立即下撤就医</li><li>氧气可应急，但不能掩盖持续恶化的症状</li></ul></div>
-          <div class="info"><h3>交通衔接</h3><ul><li>Day 2、8疆内航班不要与长途驾驶安排在同一天</li><li>Day 5蓝湖往返后住塔县，Day 6再返喀什</li><li>检查备胎、胎压、刹车和玻璃水，偏远路段及时补油</li><li>Day 7不自驾，莎车火车往返票同时确认</li></ul></div>
-          <div class="info wide"><h3>装包清单｜按必要程度</h3><ul class="checklist"><li><strong>必须｜证件原件：</strong>身份证、驾驶证、行驶证、边境通行证</li><li><strong>必须｜防晒防干：</strong>SPF50+防晒霜、UV400墨镜、遮阳帽、润唇膏</li><li><strong>必须｜分层保暖：</strong>速干内层、抓绒或薄羽绒、防风外壳、保暖帽</li><li><strong>必须｜硬底防滑鞋：</strong>冰川段有高海拔上坡，不穿拖鞋或光底鞋</li><li><strong>必须｜补水路餐：</strong>保温杯、饮用水、电解质饮料、高能量零食</li><li><strong>必须｜个人用药：</strong>足量处方药、晕车药与基础外伤用品</li><li><strong>必须｜离线与供电：</strong>充电宝、车充、充电线、离线地图</li><li><strong>必须｜断网备用：</strong>少量现金、酒店和救援电话截图</li><li><strong>自驾必须：</strong>备胎、千斤顶、三角警示牌、充气泵</li><li><strong>有条件必带：</strong>经医生评估准备便携氧气和指夹血氧仪</li><li><strong>可选：</strong>登山杖、相机备用电池、暖宝宝</li><li><strong>底线：</strong>异常症状持续加重，立即下撤就医</li></ul></div>
+          <div class="info"><h3>交通衔接</h3><ul><li>9月4日 GJ8967 杭州飞乌鲁木齐，9月5日 CZ6805 飞喀什后取车</li><li>9月9日抵达喀什后还车；9月10日莎车火车往返</li><li>9月11日搭乘 CA9656 返回乌鲁木齐，9月12日参加天池旅行团</li><li>9月13日 GS7517 预计08:10起飞、14:50抵达杭州，建议约05:30前往机场</li></ul></div>
+          <div class="info wide"><h3>装包清单｜按必要程度</h3><ul class="checklist"><li><strong>必须｜证件原件：</strong>身份证、驾驶证、行驶证、边境通行证</li><li><strong>必须｜防晒防干：</strong>SPF50+防晒霜、UV400墨镜、遮阳帽、润唇膏</li><li><strong>必须｜分层保暖：</strong>速干内层、抓绒或薄羽绒、防风外壳、保暖帽</li><li><strong>必须｜硬底防滑鞋：</strong>冰川段有高海拔上坡，不穿拖鞋或光底鞋</li><li><strong>必须｜自驾路餐：</strong>9月6、7日各带两人份完整便携午餐；9月8、9日至少随车留一顿应急路餐。可选馕或面包、鸡蛋或熟食、香蕉、坚果和巧克力，避免只带甜食</li><li><strong>必须｜补水：</strong>保温杯、足量饮用水和电解质饮料；高海拔少量多次饮用</li><li><strong>必须｜个人用药：</strong>足量处方药、晕车药与基础外伤用品</li><li><strong>必须｜离线与供电：</strong>充电宝、车充、充电线、离线地图</li><li><strong>必须｜断网备用：</strong>少量现金、酒店和救援电话截图</li><li><strong>自驾必须：</strong>备胎、千斤顶、三角警示牌、充气泵</li><li><strong>有条件必带：</strong>经医生评估准备便携氧气和指夹血氧仪</li><li><strong>可选：</strong>登山杖、相机备用电池、暖宝宝</li><li><strong>底线：</strong>异常症状持续加重，立即下撤就医</li></ul></div>
           <div class="info"><h3>季节判断</h3><ul><li>6–8月白昼长、旺季人多，山区仍可能骤冷</li><li>9–10月通透、秋色好，昼夜温差更大</li><li>冬春冰雪封路概率高，部分景区季节性关闭</li><li>每天出发前复核天气、道路与景区公告</li></ul></div>
         </div>
       </div>
@@ -320,19 +369,26 @@
 
     <section id="budget">
       <div class="wrap">
-        <div class="section-head"><div class="section-no">05 / 预算参考</div><div><h2>两人出行，含疆内转场</h2><p class="section-intro">人民币估算，不含往返新疆的大交通；新增两晚乌鲁木齐住宿和乌鲁木齐—喀什往返机票。</p></div></div>
-        <div class="budget-grid">
-          <table class="budget-table"><thead><tr><th>项目（2人合计）</th><th>参考范围</th></tr></thead><tbody>
-            <tr><td>乌鲁木齐—喀什往返机票</td><td>¥1,600–4,000</td></tr><tr><td>租车4–5天</td><td>¥1,800–3,500</td></tr><tr><td>油费 + 停车</td><td>¥700–1,100</td></tr><tr><td>住宿8晚</td><td>¥3,000–5,500</td></tr><tr><td>餐饮</td><td>¥1,800–2,800</td></tr><tr><td>门票 / 区间车 / 火车 / 演出</td><td>¥1,100–2,200</td></tr><tr><td>保险 / 接送机 / 杂项</td><td>¥900–1,500</td></tr><tr><td><strong>合计</strong></td><td><strong>¥10,900–20,600</strong></td></tr>
-          </tbody></table>
-          <div class="budget-note"><h3>哪里值得花钱</h3><p><strong>塔县住宿：</strong>连住三晚，优先供暖、热水稳定且睡眠评价好的酒店。</p><p><strong>莎车交通：</strong>火车票以12306为准，另留车站与核心景区间的打车预算。</p><p><strong>车辆：</strong>不必盲目追求越野车，但车况、保险与救援范围必须清楚。</p><p><strong>弹性预订：</strong>冰川可能因天气关闭，演出场次也可能调整，尽量选可退订项目。</p></div>
+        <div class="section-head"><div class="section-no">05 / 消费统计</div><div><h2>两人消费，一处汇总</h2><p class="section-intro">每日填写金额并选择付款人后，下表会自动统计10天内两个人分别支付的金额，并计算均分结算结果。</p></div></div>
+        <div class="actual-budget">
+          <h3>10天实际消费统计</h3>
+          <p>统计每日住宿、三餐、夜宵与其他消费；没有选择付款人的金额单独列出，避免误计到任意一人。</p>
+          <div class="actual-budget-wrap">
+            <table class="budget-table" aria-label="两人10天实际消费统计">
+              <thead><tr><th>日期</th><th>XIWEN支付</th><th>MIAOWEI支付</th><th>未选择付款人</th><th>当日合计</th></tr></thead>
+              <tbody><tr><td>固定支出：租车</td><td>¥0.00</td><td>¥864.00</td><td>¥0.00</td><td>¥864.00</td></tr></tbody>
+              <tbody id="expense-summary-body"></tbody>
+              <tfoot><tr><td>10天合计</td><td id="person-a-total">¥0.00</td><td id="person-b-total">¥0.00</td><td id="unassigned-total">¥0.00</td><td id="overall-total">¥0.00</td></tr></tfoot>
+            </table>
+            <div class="settlement"><div><strong>均分结算</strong><span id="settlement-note">仅计算已选择付款人的消费</span></div><output id="settlement-result">当前无需互相转账</output></div>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="sources" id="sources">
       <div class="wrap">
-        <div class="section-head"><div class="section-no">06 / 实时核验</div><div><h2>出发前，重新查一遍</h2><p class="section-intro">本页不写死票价和开放时段。结合政务入口、景区官方公众号、场馆电话与交警当天通知核验。</p></div></div>
+        <div class="section-head"><div class="section-no">06 / 实时核验</div><div><h2>出发前，重新查一遍</h2><p class="section-intro">消费栏中的票价仅供参考，不预填、不自动计入合计。实际价格和开放时段需结合政务入口、景区官方公众号、场馆电话与交警当天通知核验。</p></div></div>
         <div class="source-list">
           <a href="https://www.kashi.gov.cn/" target="_blank" rel="noopener"><strong>喀什地区行政公署</strong><span>政务与公告 ↗</span></a>
           <a href="https://s.nia.gov.cn/mps/main.html" target="_blank" rel="noopener"><strong>国家移民管理局政务服务平台</strong><span>办事入口 ↗</span></a>
@@ -343,41 +399,45 @@
           <a href="https://www.12328.cn/" target="_blank" rel="noopener"><strong>12328交通运输服务监督</strong><span>交通咨询 ↗</span></a>
           <a href="https://map.baidu.com/" target="_blank" rel="noopener"><strong>地图实时路况</strong><span>车程复核 ↗</span></a>
         </div>
-        <p class="asof">攻略更新日期：2026-08-29。路线为“乌鲁木齐往返 + 帕米尔舒缓四日 + 莎车一日游”版。航班、临时管制、票价、演出与预约规则均以出发时官方通知为准。</p>
+        <p class="asof">攻略更新日期：2026-08-30。航班预计到达时间用于行程预留；GS7517预计08:10从乌鲁木齐起飞、14:50抵达杭州。所有起降时刻、航站楼和航班动态均以机票及航空公司最新通知为准。</p>
       </div>
     </section>
   </main>
 
-  <footer><div class="wrap"><p>新疆9日旅行路书 Ver.3 · 高德地图版</p><p>看过雪峰，也听见王城。</p></div></footer>
+  <footer><div class="wrap"><p>新疆10日旅行路书 Ver.3 · 高德地图版</p><p>看过雪峰，也听见王城。</p></div></footer>
   <script src="https://webapi.amap.com/loader.js"></script>
   <script>
     const places = {
-      urumqi: { name: "乌鲁木齐", coords: [43.8256, 87.6168], note: "第1、8、9天住宿或停留" },
-      urumqiAirport: { name: "乌鲁木齐机场", coords: [43.9071, 87.4742], note: "疆内航班与最终返程" },
-      kashgar: { name: "喀什", coords: [39.4704, 75.9898], note: "第2、6、7、8天住宿或停留" },
-      oldTown: { name: "喀什古城", coords: [39.4747, 75.9941], note: "第2天与第8天步行游览" },
-      idKah: { name: "艾提尕尔广场", coords: [39.472403, 75.985595], note: "第2天可选景点" },
-      idKahMosque: { name: "艾提尕尔清真寺", coords: [39.4720, 75.9851], note: "第2天按现场要求决定是否入内" },
-      highPlatform: { name: "高台民居", coords: [39.470237, 76.00043], note: "第2天可选，开放状态需复核" },
-      oytagh: { name: "奥依塔克红山谷", coords: [39.101, 75.558], note: "第3天安全短停" },
-      baisha: { name: "白沙湖", coords: [38.650, 75.044], note: "第3天主要停靠点" },
-      karakul: { name: "喀拉库勒湖", coords: [38.438, 75.057], note: "第3天主要停靠点" },
-      glacier: { name: "慕士塔格冰川公园", coords: [38.277, 75.106], note: "第4天高海拔活动" },
-      taghman: { name: "塔合曼湿地", coords: [37.950, 75.354], note: "第4天天气不佳时的备选景点" },
-      tashkurgan: { name: "塔县", coords: [37.773, 75.229], note: "第3至5天住宿，第6天返程" },
-      bandir: { name: "班迪尔蓝湖", coords: [37.808, 75.374], note: "第5天从塔县往返" },
-      stoneCity: { name: "石头城遗址", coords: [37.786391, 75.234484], note: "第5天傍晚游览" },
-      goldenGrassland: { name: "金草滩湿地", coords: [37.786391, 75.234484], note: "第5天与石头城连游" },
-      shache: { name: "莎车", coords: [38.414, 77.240], note: "第7天火车一日游" },
-      tomb: { name: "叶尔羌汗国王陵", coords: [38.416, 77.246], note: "第7天人文主景点" },
-      shacheOldTown: { name: "莎车老城", coords: [38.414, 77.240], note: "第7天可选街区" },
-      heritagePark: { name: "莎车县非物质文化遗产博览园", coords: [38.414, 77.240], note: "第7天按开放与演出场次选择" },
-      xinjiangMuseum: { name: "新疆维吾尔自治区博物馆", coords: [43.817, 87.581], note: "第9天可选景点" },
-      grandBazaar: { name: "新疆国际大巴扎", coords: [43.776, 87.617], note: "第9天可选景点" },
-      kashgarAirport: { name: "喀什机场", coords: [39.543, 76.020], note: "第2天抵达、第8天返乌鲁木齐" }
+      urumqi: { name: "乌鲁木齐", coords: [43.8256, 87.6168], note: "9月4日、11日至13日住宿或停留" },
+      hangzhouAirport: { name: "杭州萧山国际机场", coords: [30.236, 120.434], note: "GJ8967 出发、GS7517 抵达" },
+      urumqiAirport: { name: "乌鲁木齐机场", coords: [43.9071, 87.4742], note: "GJ8967、CZ6805、CA9656、GS7517 衔接" },
+      kashgar: { name: "喀什", coords: [39.4704, 75.9898], note: "9月5日、9日至11日住宿或停留" },
+      kashgarMuseum: { name: "喀什地区博物馆", coords: [39.486, 76.047], note: "9月5日下午参观，需确认预约与开放时间" },
+      oldTown: { name: "喀什古城", coords: [39.4747, 75.9941], note: "9月5日与11日步行游览" },
+      idKah: { name: "艾提尕尔广场", coords: [39.472403, 75.985595], note: "9月5日可选景点" },
+      idKahMosque: { name: "艾提尕尔清真寺", coords: [39.4720, 75.9851], note: "9月5日按现场要求决定是否入内" },
+      highPlatform: { name: "高台民居", coords: [39.470237, 76.00043], note: "9月5日可选，开放状态需复核" },
+      oytagh: { name: "奥依塔克红山谷", coords: [39.101, 75.558], note: "9月6日安全短停" },
+      baisha: { name: "白沙湖", coords: [38.650, 75.044], note: "9月6日主要停靠点" },
+      karakul: { name: "喀拉库勒湖", coords: [38.438, 75.057], note: "9月6日主要停靠点" },
+      glacier: { name: "慕士塔格冰川公园", coords: [38.277, 75.106], note: "9月7日高海拔活动" },
+      taghman: { name: "塔合曼湿地", coords: [37.950, 75.354], note: "9月7日天气不佳时的备选景点" },
+      tashkurgan: { name: "塔县", coords: [37.773, 75.229], note: "9月6日至8日住宿，9月9日返程" },
+      bandir: { name: "班迪尔蓝湖", coords: [37.808, 75.374], note: "9月8日从塔县往返" },
+      stoneCity: { name: "石头城遗址", coords: [37.786391, 75.234484], note: "9月8日傍晚游览" },
+      goldenGrassland: { name: "金草滩湿地", coords: [37.786391, 75.234484], note: "9月8日与石头城连游" },
+      shache: { name: "莎车", coords: [38.414, 77.240], note: "9月10日火车一日游" },
+      tomb: { name: "叶尔羌汗国王陵", coords: [38.416, 77.246], note: "9月10日人文主景点" },
+      shacheOldTown: { name: "莎车老城", coords: [38.414, 77.240], note: "9月10日可选街区" },
+      heritagePark: { name: "莎车县非物质文化遗产博览园", coords: [38.414, 77.240], note: "9月10日按开放与演出场次选择" },
+      xinjiangMuseum: { name: "新疆维吾尔自治区博物馆", coords: [43.817, 87.581], note: "9月12日天气不佳时的市区备选" },
+      grandBazaar: { name: "新疆国际大巴扎", coords: [43.776, 87.617], note: "9月12日天气不佳时的市区备选" },
+      tianchi: { name: "天山天池景区", coords: [43.884, 88.128], note: "9月12日一日游主景点" },
+      kashgarAirport: { name: "喀什机场", coords: [39.543, 76.020], note: "9月5日抵达、9月11日返乌鲁木齐" }
     };
 
     const poiSearchAliases = {
+      kashgarMuseum: ["喀什地区博物馆", "喀什博物馆"],
       taghman: ["塔合曼湿地公园", "塔合曼湿地"],
       bandir: ["班迪尔蓝湖", "下坂地水库"],
       stoneCity: ["塔什库尔干石头城", "石头城下金草滩"],
@@ -385,19 +445,22 @@
       shacheOldTown: ["莎车老城", "老城景区喀赞其街"],
       heritagePark: ["莎车县非物质文化遗产博览园", "莎车非遗博览园"],
       xinjiangMuseum: ["新疆维吾尔自治区博物馆", "新疆博物馆"],
-      grandBazaar: ["新疆国际大巴扎", "新疆大巴扎"]
+      grandBazaar: ["新疆国际大巴扎", "新疆大巴扎"],
+      tianchi: ["天山天池风景区", "新疆天山天池"]
     };
 
+    const tripDates = ["9月4日", "9月5日", "9月6日", "9月7日", "9月8日", "9月9日", "9月10日", "9月11日", "9月12日", "9月13日"];
     const dayRoutes = [
-      { day: 1, color: "#b6412f", label: "抵达乌鲁木齐", road: false, points: ["urumqiAirport", "urumqi"] },
-      { day: 2, color: "#c99132", label: "飞抵喀什 + 古城可选游", road: false, transport: "flight", points: ["urumqi", "urumqiAirport", "kashgarAirport", "kashgar", "oldTown", "idKah", "highPlatform"] },
+      { day: 1, color: "#b6412f", label: "GJ8967 杭州 → 乌鲁木齐", road: false, transport: "flight", points: ["hangzhouAirport", "urumqiAirport", "urumqi"] },
+      { day: 2, color: "#c99132", label: "CZ6805 乌鲁木齐 → 喀什", road: false, transport: "flight", points: ["urumqi", "urumqiAirport", "kashgarAirport", "kashgar", "kashgarMuseum", "oldTown", "idKah", "highPlatform"] },
       { day: 3, color: "#246c84", label: "喀什 → 塔县", road: true, points: ["kashgar", "oytagh", "baisha", "karakul", "tashkurgan"] },
       { day: 4, color: "#315c4c", label: "冰川往返", road: true, points: ["tashkurgan", "glacier", "tashkurgan"] },
       { day: 5, color: "#8b4f72", label: "蓝湖 + 石头城金草滩", road: true, points: ["tashkurgan", "bandir", "tashkurgan", "stoneCity", "tashkurgan"] },
       { day: 6, color: "#5d6f94", label: "塔县 → 喀什", road: true, points: ["tashkurgan", "karakul", "baisha", "oytagh", "kashgar"] },
       { day: 7, color: "#795548", label: "喀什 ⇄ 莎车（火车）", road: false, transport: "train", points: ["kashgar", "shache", "tomb", "shache", "kashgar"] },
-      { day: 8, color: "#a45a3a", label: "喀什 → 乌鲁木齐（航班）", road: false, transport: "flight", points: ["oldTown", "kashgarAirport", "urumqiAirport", "urumqi"] },
-      { day: 9, color: "#46756a", label: "乌鲁木齐返程", road: false, points: ["urumqi", "urumqiAirport"] }
+      { day: 8, color: "#a45a3a", label: "CA9656 喀什 → 乌鲁木齐", road: false, transport: "flight", points: ["oldTown", "kashgarAirport", "urumqiAirport", "urumqi"] },
+      { day: 9, color: "#46756a", label: "天池旅行团大巴往返", road: false, transport: "tour", points: ["urumqi", "tianchi", "urumqi"] },
+      { day: 10, color: "#6f6657", label: "GS7517 08:10 → 14:50", road: false, transport: "flight", points: ["urumqi", "urumqiAirport", "hangzhouAirport"] }
     ];
 
     const amapConfig = {
@@ -408,8 +471,185 @@
     const controls = document.getElementById("map-controls");
     const buttons = [];
     const routeOverlays = new Map();
+    const poiCacheStorageKey = "nanjiang-poi-status-v1";
+    const routeCacheStorageKey = "nanjiang-road-paths-v1";
+    let poiStatusCache = {};
+    let roadPathCache = {};
     let map;
     let infoWindow;
+
+    try {
+      poiStatusCache = JSON.parse(localStorage.getItem(poiCacheStorageKey)) || {};
+      roadPathCache = JSON.parse(localStorage.getItem(routeCacheStorageKey)) || {};
+    } catch (error) {
+      console.warn("无法读取高德查询缓存", error);
+    }
+
+    function savePoiStatus(key, result) {
+      poiStatusCache[key] = {
+        state: result.state,
+        label: result.label,
+        poiName: result.poi?.name || ""
+      };
+      try {
+        localStorage.setItem(poiCacheStorageKey, JSON.stringify(poiStatusCache));
+      } catch (error) {
+        console.warn("无法保存高德 POI 缓存", error);
+      }
+      return result;
+    }
+
+    function saveRoadPath(day, result) {
+      const path = result.path.map(point => [
+        Number(point.lng ?? point.getLng?.() ?? point[0]),
+        Number(point.lat ?? point.getLat?.() ?? point[1])
+      ]);
+      const cachedResult = { path, distance: result.distance || 0, planned: result.planned };
+      roadPathCache[day] = cachedResult;
+      try {
+        localStorage.setItem(routeCacheStorageKey, JSON.stringify(roadPathCache));
+      } catch (error) {
+        console.warn("无法保存高德驾车路线缓存", error);
+      }
+      return cachedResult;
+    }
+
+    function initializeExpenseTables() {
+      const storageKey = "nanjiang-daily-expenses-v1";
+      const payers = [
+        { key: "", label: "选择付款人" },
+        { key: "personA", label: "XIWEN" },
+        { key: "personB", label: "MIAOWEI" }
+      ];
+      const baseCategories = [
+        { key: "stay", label: "住宿" },
+        { key: "breakfast", label: "早餐" },
+        { key: "lunch", label: "午餐" },
+        { key: "dinner", label: "晚餐" },
+        { key: "lateSnack", label: "夜宵" },
+        { key: "other", label: "其他" }
+      ];
+      const ticketCategories = {
+        2: [{ key: "ticketIdKahMosque", label: "艾提尕尔清真寺门票（参考30/人）" }],
+        3: [
+          { key: "ticketBaisha", label: "白沙湖南岸门票（参考40/人）" },
+          { key: "ticketKarakul", label: "喀拉库勒湖门票（参考45/人）" }
+        ],
+        4: [{ key: "ticketGlacier", label: "慕士塔格冰川门票+区间车" }],
+        5: [{ key: "ticketStoneCity", label: "石头城+金草滩联票（参考80/人）" }],
+        7: [
+          { key: "ticketTomb", label: "叶尔羌汗国王陵门票（如收费）" },
+          { key: "ticketHeritagePark", label: "非遗博览园/演出门票（如收费）" }
+        ],
+        9: [{ key: "ticketTianchi", label: "天池门票+区间车（团费未含时）" }]
+      };
+      const categoriesForDay = day => [...baseCategories, ...(ticketCategories[day] || [])];
+      let savedExpenses = {};
+      try {
+        savedExpenses = JSON.parse(localStorage.getItem(storageKey)) || {};
+      } catch (error) {
+        console.warn("无法读取本地开销记录", error);
+      }
+
+      const normalizeExpense = value => typeof value === "object" && value !== null
+        ? { amount: value.amount || "", payer: value.payer || "" }
+        : { amount: value || "", payer: "" };
+      const updateSummary = () => {
+        const summaryBody = document.getElementById("expense-summary-body");
+        const totals = { personA: 0, personB: 0, unassigned: 0, overall: 0 };
+        summaryBody.innerHTML = tripDates.map((date, index) => {
+          const dayExpenses = savedExpenses[index + 1] || {};
+          const dayTotals = { personA: 0, personB: 0, unassigned: 0, overall: 0 };
+          categoriesForDay(index + 1).forEach(category => {
+            const expense = normalizeExpense(dayExpenses[category.key]);
+            const amount = Number(expense.amount) || 0;
+            const payerKey = expense.payer || "unassigned";
+            dayTotals[payerKey] += amount;
+            dayTotals.overall += amount;
+          });
+          Object.keys(totals).forEach(key => { totals[key] += dayTotals[key]; });
+          const unassignedClass = dayTotals.unassigned > 0 ? " class=\"expense-error\"" : "";
+          return `<tr><td>${date}</td><td>¥${dayTotals.personA.toFixed(2)}</td><td>¥${dayTotals.personB.toFixed(2)}</td><td${unassignedClass}>¥${dayTotals.unassigned.toFixed(2)}</td><td>¥${dayTotals.overall.toFixed(2)}</td></tr>`;
+        }).join("");
+        const rentalAmount = 864;
+        totals.personB += rentalAmount;
+        totals.overall += rentalAmount;
+        document.getElementById("person-a-total").textContent = `¥${totals.personA.toFixed(2)}`;
+        document.getElementById("person-b-total").textContent = `¥${totals.personB.toFixed(2)}`;
+        const unassignedTotal = document.getElementById("unassigned-total");
+        unassignedTotal.textContent = `¥${totals.unassigned.toFixed(2)}`;
+        unassignedTotal.classList.toggle("expense-error", totals.unassigned > 0);
+        unassignedTotal.setAttribute("aria-invalid", String(totals.unassigned > 0));
+        document.getElementById("overall-total").textContent = `¥${totals.overall.toFixed(2)}`;
+        const difference = totals.personA - totals.personB;
+        const settlement = document.querySelector(".settlement");
+        const settlementResult = document.getElementById("settlement-result");
+        settlement.classList.toggle("error", totals.unassigned > 0);
+        if (totals.unassigned > 0) {
+          settlementResult.value = `错误：有 ¥${totals.unassigned.toFixed(2)} 未选择付款人`;
+        } else if (Math.abs(difference) < .01) {
+          settlementResult.value = "当前无需互相转账";
+        } else {
+          const payer = difference > 0 ? "MIAOWEI" : "XIWEN";
+          const receiver = difference > 0 ? "XIWEN" : "MIAOWEI";
+          settlementResult.value = `${payer} 给 ${receiver} ¥${(Math.abs(difference) / 2).toFixed(2)}`;
+        }
+        document.getElementById("settlement-note").textContent = totals.unassigned > 0
+          ? "请先为所有非零消费选择付款人，之后才能计算均分"
+          : "仅计算已选择付款人的消费";
+      };
+
+      document.querySelectorAll(".day").forEach((dayElement, index) => {
+        const day = index + 1;
+        const date = tripDates[index];
+        const categories = categoriesForDay(day);
+        const tip = dayElement.querySelector(".tip");
+        const expenseSection = document.createElement("section");
+        expenseSection.className = "daily-expenses";
+        expenseSection.setAttribute("aria-label", `${date}当天消费`);
+        expenseSection.innerHTML = `
+          <div class="expense-head"><h4>当天消费</h4><span>门票参考价按人计算，输入两人实际支付总额</span></div>
+          <div class="expense-table-wrap">
+            <table class="expense-table">
+              <thead><tr>${categories.map(category => `<th scope="col">${category.label}（元）</th>`).join("")}</tr></thead>
+              <tbody><tr>${categories.map(category => `<td><div class="expense-entry"><input type="number" min="0" step="0.01" inputmode="decimal" data-expense="${category.key}" aria-label="${date}${category.label}价格" placeholder="0.00"><select data-payer="${category.key}" aria-label="${date}${category.label}付款人">${payers.map(payer => `<option value="${payer.key}">${payer.label}</option>`).join("")}</select></div></td>`).join("")}</tr></tbody>
+            </table>
+          </div>
+          <div class="expense-total"><span>当日合计</span><output>¥0.00</output></div>`;
+        tip.before(expenseSection);
+
+        const inputs = [...expenseSection.querySelectorAll("input")];
+        const payerSelects = [...expenseSection.querySelectorAll("select")];
+        const output = expenseSection.querySelector("output");
+        const updateTotal = () => {
+          const values = Object.fromEntries(inputs.map(input => {
+            const payer = expenseSection.querySelector(`[data-payer="${input.dataset.expense}"]`).value;
+            return [input.dataset.expense, { amount: input.value, payer }];
+          }));
+          const total = inputs.reduce((sum, input) => sum + (Number(input.value) || 0), 0);
+          output.value = `¥${total.toFixed(2)}`;
+          savedExpenses[day] = values;
+          try {
+            localStorage.setItem(storageKey, JSON.stringify(savedExpenses));
+          } catch (error) {
+            console.warn("无法保存本地开销记录", error);
+          }
+          updateSummary();
+        };
+
+        inputs.forEach(input => {
+          input.value = normalizeExpense(savedExpenses[day]?.[input.dataset.expense]).amount;
+          input.addEventListener("input", updateTotal);
+        });
+        payerSelects.forEach(select => {
+          select.value = normalizeExpense(savedExpenses[day]?.[select.dataset.payer]).payer;
+          select.addEventListener("change", updateTotal);
+        });
+        const initialTotal = inputs.reduce((sum, input) => sum + (Number(input.value) || 0), 0);
+        output.value = `¥${initialTotal.toFixed(2)}`;
+      });
+      updateSummary();
+    }
 
     function transformLatitude(longitude, latitude) {
       let result = -100 + 2 * longitude + 3 * latitude + .2 * latitude * latitude + .1 * longitude * latitude + .2 * Math.sqrt(Math.abs(longitude));
@@ -469,6 +709,15 @@
     }
 
     async function searchPoiStatus(key) {
+      if (Object.hasOwn(poiStatusCache, key)) {
+        const cached = poiStatusCache[key];
+        return {
+          state: cached.state,
+          label: cached.label,
+          poi: cached.poiName ? { name: cached.poiName } : null,
+          cached: true
+        };
+      }
       const aliases = poiSearchAliases[key] || [places[key].name];
       for (const alias of aliases) {
         for (let attempt = 0; attempt < 2; attempt++) {
@@ -477,10 +726,10 @@
             .filter(candidate => candidate.distance <= 50)
             .sort((left, right) => left.distance - right.distance);
           await new Promise(resolve => setTimeout(resolve, 400));
-          if (candidates[0]) return { ...classifyPoiStatus(candidates[0].poi), poi: candidates[0].poi };
+          if (candidates[0]) return savePoiStatus(key, { ...classifyPoiStatus(candidates[0].poi), poi: candidates[0].poi });
         }
       }
-      return { ...classifyPoiStatus(null), poi: null };
+      return savePoiStatus(key, { ...classifyPoiStatus(null), poi: null });
     }
 
     async function updatePoiStatuses() {
@@ -500,7 +749,8 @@
         const badge = element.nextElementSibling;
         badge.className = `poi-status ${result.state}`;
         badge.textContent = result.label;
-        badge.title = result.poi ? `高德匹配：${result.poi.name}` : "高德未返回可靠匹配，请人工核验";
+        const cacheNote = result.cached ? "（已固定缓存）" : "（本次查询后已固定缓存）";
+        badge.title = result.poi ? `高德匹配：${result.poi.name}${cacheNote}` : `高德未返回可靠匹配${cacheNote}，请人工核验`;
       });
     }
 
@@ -526,17 +776,18 @@
 
     async function resolveRoadPath(route, pointPath) {
       if (!route.road) return { path: pointPath, planned: false };
+      if (Object.hasOwn(roadPathCache, route.day)) return roadPathCache[route.day];
       try {
         if (pointPath[0][0] === pointPath.at(-1)[0] && pointPath[0][1] === pointPath.at(-1)[1]) {
           const outward = await drivingSearch([pointPath[0], ...pointPath.slice(1, -1)]);
           const returning = await drivingSearch([pointPath.at(-2), pointPath.at(-1)]);
-          return { path: [...outward.path, ...returning.path], distance: outward.distance + returning.distance, planned: true };
+          return saveRoadPath(route.day, { path: [...outward.path, ...returning.path], distance: outward.distance + returning.distance, planned: true });
         }
         const result = await drivingSearch(pointPath);
-        return { ...result, planned: true };
+        return saveRoadPath(route.day, { ...result, planned: true });
       } catch (error) {
-        console.warn(`Day ${route.day} 使用点位示意路线`, error);
-        return { path: pointPath, planned: false };
+        console.warn(`${tripDates[route.day - 1]} 使用点位示意路线`, error);
+        return saveRoadPath(route.day, { path: pointPath, planned: false });
       }
     }
 
@@ -556,11 +807,13 @@
       });
       polyline.on("click", event => {
         const description = route.transport
-          ? `${route.transport === "train" ? "火车" : "航班"}行程点位示意，准确时刻以${route.transport === "train" ? "12306" : "航空公司"}为准。`
+          ? route.transport === "tour"
+            ? "旅行团大巴往返为点位示意，准确路线与时间以旅行社通知为准。"
+            : `${route.transport === "train" ? "火车" : "航班"}行程点位示意，准确时刻以${route.transport === "train" ? "12306" : "航空公司"}为准。`
           : roadPath.planned
           ? "已按高德驾车路线沿道路绘制，出发时请重新导航。"
           : route.road ? "该日在线规划失败，当前为虚线点位示意。" : "市内活动为点位关系示意。";
-        infoWindow.setContent(`<div class="map-popup"><strong>Day ${route.day} · ${route.label}</strong><span>${description}</span></div>`);
+        infoWindow.setContent(`<div class="map-popup"><strong>${tripDates[route.day - 1]} · ${route.label}</strong><span>${description}</span></div>`);
         infoWindow.open(map, event.lnglat);
       });
 
@@ -610,7 +863,7 @@
     function createControls() {
       controls.replaceChildren();
       buttons.length = 0;
-      const routes = [{ day: "all", color: "#20251f", label: "Day 1–9", title: "全部路线" }, ...dayRoutes.map(route => ({ ...route, title: `Day ${route.day}` }))];
+      const routes = [{ day: "all", color: "#20251f", label: "9月4日–13日", title: "全部路线" }, ...dayRoutes.map(route => ({ ...route, title: tripDates[route.day - 1] }))];
       routes.forEach(route => {
         const button = document.createElement("button");
         button.type = "button";
@@ -662,7 +915,7 @@
         createControls();
         showRoute("all");
         controls.hidden = false;
-        const failedDays = dayRoutes.filter(route => route.road && !routeOverlays.get(route.day).planned).map(route => `Day ${route.day}`);
+        const failedDays = dayRoutes.filter(route => route.road && !routeOverlays.get(route.day).planned).map(route => tripDates[route.day - 1]);
         if (failedDays.length) {
           status.textContent = `${failedDays.join("、")} 未获取到道路规划，已用虚线示意；其他驾车日均沿高德道路绘制。`;
         } else {
@@ -674,6 +927,7 @@
       }
     }
 
+    initializeExpenseTables();
     initializeMap(amapConfig);
   </script>
 </body>
