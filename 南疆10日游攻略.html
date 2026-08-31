@@ -78,7 +78,7 @@
     .day { display:grid; grid-template-columns:180px 1fr; gap:24px; padding:34px 0; border-top:1px solid var(--line); }
     .day:last-child { border-bottom:1px solid var(--line); }
     .day-label { position:sticky; top:88px; align-self:start; }
-    .day-label b { display:block; color:var(--red); font:900 34px/1 "Microsoft YaHei",sans-serif; }
+    .day-label b { display:block; color:var(--red); font:900 28px/1 "Microsoft YaHei",sans-serif; white-space:nowrap; }
     .day-label span { display:block; margin-top:8px; color:var(--muted); }
     .day-main { min-width:0; }
     .day-summary { position:relative; min-height:72px; padding-right:52px; cursor:pointer; }
@@ -132,6 +132,25 @@
     .info li + li { margin-top:8px; }
     .info.wide { grid-column:span 2; }
     .checklist { columns:2; column-gap:32px; }
+    .souvenirs { background:#eee8da; }
+    .gift-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .gift-city { padding:26px; border-top:4px solid var(--city-color); background:var(--white); box-shadow:var(--shadow); }
+    .gift-city h3 { margin:0 0 4px; font-size:26px; }
+    .gift-city > p { margin:0 0 20px; color:var(--muted); font-size:14px; }
+    .gift-list { display:grid; gap:15px; margin:0; }
+    .gift-item { padding-top:15px; border-top:1px solid var(--line); }
+    .gift-item dt { font-weight:800; }
+    .gift-item dd { margin:4px 0 0; color:var(--muted); }
+    .gift-type { display:inline-block; margin-right:7px; padding:1px 6px; color:white; background:var(--city-color); font:700 11px/1.7 "Microsoft YaHei",sans-serif; vertical-align:2px; }
+    .gift-item.featured-gift { position:relative; margin:0 -6px 4px; padding:18px 18px 17px 20px; overflow:hidden; border:1px solid #ddcfaa; border-left:6px solid var(--gold); background:#fff9e9; box-shadow:0 8px 20px rgba(70,65,45,.12); }
+    .gift-item.featured-gift dt { color:var(--city-color); font-size:19px; }
+    .gift-item.featured-gift dd { color:#4f5148; }
+    .gift-item.featured-gift .gift-type { color:#fff; background:var(--city-color); }
+    .gift-buy { margin-top:18px; padding:14px 16px; border-left:3px solid var(--city-color); background:var(--paper); font-size:14px; }
+    .gift-notes { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; margin-top:24px; border:1px solid var(--line); background:var(--line); }
+    .gift-note { padding:18px; background:var(--white); }
+    .gift-note strong { display:block; margin-bottom:4px; }
+    .gift-note span { color:var(--muted); font-size:14px; }
     .budget-table { width:100%; border-collapse:collapse; background:var(--white); box-shadow:var(--shadow); }
     .budget-table th,.budget-table td { padding:12px 16px; text-align:left; border-bottom:1px solid var(--line); }
     .budget-table th { color:white; background:var(--ink); font-family:"Microsoft YaHei",sans-serif; }
@@ -208,7 +227,7 @@
       #trip-map { min-height:520px; }
       .map-panel { border-top:1px solid var(--line); border-left:0; }
       .map-controls { grid-template-columns:1fr; }
-      .info-grid,.source-list { grid-template-columns:1fr; }
+      .info-grid,.source-list,.gift-grid,.gift-notes { grid-template-columns:1fr; }
       .source-list a { display:grid; gap:6px; }
       .source-list span { justify-self:start; }
       .info.wide { grid-column:auto; }
@@ -252,7 +271,7 @@
   <nav class="nav" aria-label="页面导航">
     <div class="wrap nav-inner">
       <a class="brand" href="#top">南疆</a>
-      <div class="links" role="tablist" aria-label="攻略栏目"><a id="tab-overview" href="#overview" role="tab" aria-controls="overview" aria-selected="true">总览</a><a id="tab-practical" href="#practical" role="tab" aria-controls="practical" aria-selected="false" tabindex="-1">行前准备</a><a id="tab-itinerary" href="#itinerary" role="tab" aria-controls="itinerary" aria-selected="false" tabindex="-1">每日行程</a><a id="tab-route-map" href="#route-map" role="tab" aria-controls="route-map" aria-selected="false" tabindex="-1">行程地图</a><a id="tab-budget" href="#budget" role="tab" aria-controls="budget" aria-selected="false" tabindex="-1">消费统计</a><a id="tab-sources" href="#sources" role="tab" aria-controls="sources" aria-selected="false" tabindex="-1">实时核验</a></div>
+      <div class="links" role="tablist" aria-label="攻略栏目"><a id="tab-overview" href="#overview" role="tab" aria-controls="overview" aria-selected="true">总览</a><a id="tab-practical" href="#practical" role="tab" aria-controls="practical" aria-selected="false" tabindex="-1">行前准备</a><a id="tab-itinerary" href="#itinerary" role="tab" aria-controls="itinerary" aria-selected="false" tabindex="-1">每日行程</a><a id="tab-route-map" href="#route-map" role="tab" aria-controls="route-map" aria-selected="false" tabindex="-1">行程地图</a><a id="tab-souvenirs" href="#souvenirs" role="tab" aria-controls="souvenirs" aria-selected="false" tabindex="-1">伴手礼</a><a id="tab-budget" href="#budget" role="tab" aria-controls="budget" aria-selected="false" tabindex="-1">消费统计</a><a id="tab-sources" href="#sources" role="tab" aria-controls="sources" aria-selected="false" tabindex="-1">实时核验</a></div>
       <button class="print-btn" type="button" onclick="window.print()" aria-label="打印攻略" title="打印攻略">⎙</button>
     </div>
   </nav>
@@ -293,7 +312,7 @@
         <div class="section-head"><div class="section-no">03 / 每日行程</div><div><h2>从天山门户，到帕米尔与王城</h2><p class="section-intro"><strong>以下全部为北京时间。</strong>新疆生活节奏通常较晚，但机票、火车、预约及官方通知均按北京时间执行。景点状态首次由高德 POI 查询后固定缓存在当前浏览器，不会随刷新重复查询；最终以景区当天公告和现场管制为准。</p></div></div>
         <div class="days">
           <article class="day">
-            <div class="day-label"><b>9月4日</b><span>住乌鲁木齐</span></div>
+            <div class="day-label"><b>9月4日 · 周五</b><span>住乌鲁木齐</span></div>
             <div class="day-main"><h3>杭州飞乌鲁木齐｜长龙航空 GJ8967</h3><div class="route-meta"><span class="tag">长龙航空 GJ8967 17:45 - 22:55</span><span class="tag">杭州 → 乌鲁木齐</span><span class="tag">如家酒店 neo（乌鲁木齐天山国际机场店）</span></div><div class="timeline">
               <div class="time">17:45</div><div class="event"><strong>搭乘长龙航空 GJ8967 前往乌鲁木齐</strong><p>提前到达杭州萧山国际机场，复核出发航站楼、值机截止时间和行李额度。</p></div>
               <div class="time">预计22:55</div><div class="event"><strong>抵达乌鲁木齐天山国际机场</strong><p>领取托运行李后直接前往酒店，不再进入市中心游览。</p></div>
@@ -304,7 +323,7 @@
           </article>
 
           <article class="day">
-            <div class="day-label"><b>9月5日</b><span>住喀什</span></div>
+            <div class="day-label"><b>9月5日 · 周六</b><span>住喀什</span></div>
             <div class="day-main"><h3>飞抵喀什｜南航 CZ6805</h3><div class="route-meta"><span class="tag">南航 CZ6805 09:50 - 11:55</span><span class="tag">乌鲁木齐 → 喀什</span><span class="tag">宜必思尚品喀什古城景区店</span></div><div class="timeline">
               <div class="time">09:50</div><div class="event"><strong>搭乘南航 CZ6805 飞往喀什</strong><p>提前到达乌鲁木齐机场，航站楼、值机截止时间和行李要求以南航最新通知为准。</p></div>
               <div class="time">11:55–13:30</div><div class="event"><strong>抵达喀什、取车</strong><p>领取行李、办理租车并验车，通常需60～90分钟；留存车身、油表和里程照片，不把取车时间压缩到半小时。</p></div>
@@ -317,7 +336,7 @@
           </article>
 
           <article class="day">
-            <div class="day-label"><b>9月6日</b><span>住塔县</span></div>
+            <div class="day-label"><b>9月6日 · 周日</b><span>住塔县</span></div>
             <div class="day-main"><h3>驶入帕米尔｜白沙湖与慕士塔格</h3><div class="route-meta"><span class="tag" data-distance-day="3">约300km</span><span class="tag">驾驶5–7h</span><span class="tag">海拔升至约3,100m</span><span class="tag">云竟酒店（塔县奇石广场店）</span></div><div class="timeline">
               <div class="time">08:00–08:30</div><div class="event"><strong>喀什出发，沿 G314 向西</strong><p>这是当地较早的出发时间，前一晚备好两人份早餐和路餐：新疆馕1～2张、熟鸡蛋2个、独立包装牛肉干或熟食、苹果或香蕉2份，再配一小袋巴旦木与葡萄干。加满油，带足饮水并备好证件原件。</p></div>
               <div class="time">10:30–11:00</div><div class="event"><strong><span class="poi-name" data-poi-key="oytagh">奥依塔克红山谷</span>短停</strong><p>只在正规停车区或安全停车带停靠，不在弯道和落石区停车拍照。</p></div>
@@ -328,7 +347,7 @@
           </article>
 
           <article class="day">
-            <div class="day-label"><b>9月7日</b><span>住塔县</span></div>
+            <div class="day-label"><b>9月7日 · 周一</b><span>住塔县</span></div>
             <div class="day-main"><h3>冰川日｜靠近“冰山之父”</h3><div class="route-meta"><span class="tag" data-distance-day="4">约160–220km</span><span class="tag">区间车+徒步</span><span class="tag">高海拔活动</span><span class="tag">云竟酒店（塔县奇石广场店）</span></div><div class="timeline">
               <div class="time">09:00–09:30</div><div class="event"><strong>前往<span class="poi-name" data-poi-key="glacier">慕士塔格冰川公园</span></strong><p>出发前在塔县备好两人份路餐：馕或面包、熟鸡蛋2个、独立包装牦牛肉干、香蕉2根和少量巧克力。按当天开放和首班区间车倒推出发时间，不进入未开放冰川或野线。</p></div>
               <div class="time">11:00–15:00</div><div class="event"><strong>区间车、徒步与自带午餐</strong><p>常见体验需约4小时，旺季排队应再留余量。牦牛肉干是塔县特色，但较咸，只作少量蛋白质补充；搭配馕、香蕉、保温水和电解质饮料，不把游客中心餐饮当作保障。</p></div>
@@ -338,7 +357,7 @@
           </article>
 
           <article class="day">
-            <div class="day-label"><b>9月8日</b><span>住塔县</span></div>
+            <div class="day-label"><b>9月8日 · 周二</b><span>住塔县</span></div>
             <div class="day-main"><h3>蓝湖与古城遗址｜自然、人文各半日</h3><div class="route-meta"><span class="tag" data-distance-day="5">约85–105km</span><span class="tag">驾驶2–3h</span><span class="tag">蓝湖 + 石头城金草滩</span><span class="tag">云竟酒店（塔县奇石广场店）</span></div><div class="timeline">
               <div class="time">09:30前后</div><div class="event"><strong>从云竟酒店（塔县奇石广场店）出发</strong><p>不用退房，轻装前往班迪尔蓝湖，随车带一份应急路餐和饮水。先确认当天道路开放情况，高反未缓解时留在县城休息。</p></div>
               <div class="time">10:30–12:30</div><div class="event"><strong><span class="poi-name" data-poi-key="bandir">班迪尔蓝湖</span></strong><p>旅游攻略多建议在日照较好的上午至中午观湖。沿允许通行道路抵达，在正规位置停车；风大时缩短停留。</p></div>
@@ -349,7 +368,7 @@
           </article>
 
           <article class="day">
-            <div class="day-label"><b>9月9日</b><span>住喀什</span></div>
+            <div class="day-label"><b>9月9日 · 周三</b><span>住喀什</span></div>
             <div class="day-main"><h3>帕米尔归途｜塔县从容返喀什</h3><div class="route-meta"><span class="tag" data-distance-day="6">约290–310km</span><span class="tag">驾驶5–6h</span><span class="tag">只走主路</span></div><div class="timeline">
               <div class="time">09:00前后</div><div class="event"><strong>塔县退房、加满油</strong><p>沿 G314 原路返回喀什，出发前在县城买好两人份应急路餐和饮水。9月6日已游览主要湖泊，返程不再为重复打卡频繁停车。</p></div>
               <div class="time">12:30–13:30</div><div class="event"><strong>沿途午餐与司机休息</strong><p>遇到确认营业且方便安全停车的正规餐饮可吃简餐，否则直接吃随车路餐，不为找饭店绕路或赶路；每连续驾驶约2小时主动休息一次。</p></div>
@@ -359,7 +378,7 @@
           </article>
 
           <article class="day">
-            <div class="day-label"><b>9月10日</b><span>住喀什</span></div>
+            <div class="day-label"><b>9月10日 · 周四</b><span>住喀什</span></div>
             <div class="day-main"><h3>火车一日游｜莎车王城精华</h3><div class="route-meta"><span class="tag">火车往返</span><span class="tag">单程通常2–3h</span><span class="tag">不在莎车住宿</span></div><div class="timeline">
               <div class="time">按12306车次</div><div class="event"><strong>乘早班火车前往莎车</strong><p>优先选择能在11:00前抵达的车次，提前到喀什站安检候车；具体运行时间和开售日期以12306为准。</p></div>
               <div class="time">抵达后</div><div class="event"><strong>前往<span class="poi-name" data-poi-key="tomb">叶尔羌汗国王陵</span></strong><p>从车站打车前往，了解阿曼尼莎汗与十二木卡姆背景；开放和停止入园时间以当天公告为准。</p></div>
@@ -370,7 +389,7 @@
           </article>
 
           <article class="day">
-            <div class="day-label"><b>9月11日</b><span>住乌鲁木齐</span></div>
+            <div class="day-label"><b>9月11日 · 周五</b><span>住乌鲁木齐</span></div>
             <div class="day-main"><h3>喀什收尾｜国航 CA9656 飞乌鲁木齐</h3><div class="route-meta"><span class="tag">国航 CA9656 13:55 - 16:00</span><span class="tag">喀什 → 乌鲁木齐</span></div><div class="timeline">
               <div class="time">08:30–10:30</div><div class="event"><strong><span class="poi-name" data-poi-key="oldTown">喀什古城</span>查漏补缺</strong><p>只安排艾提尕尔周边、东区街巷或咖啡馆；高台民居仅在确认开放且10:30前可结束时前往。</p></div>
               <div class="time">10:30–11:00</div><div class="event"><strong>返回酒店取行李、打车去机场</strong><p>13:55起飞，建议11:30前抵达喀什机场，为市区交通、值机和安检留足时间。</p></div>
@@ -380,7 +399,7 @@
           </article>
 
           <article class="day">
-            <div class="day-label"><b>9月12日</b><span>住乌鲁木齐</span></div>
+            <div class="day-label"><b>9月12日 · 周六</b><span>住乌鲁木齐</span></div>
             <div class="day-main"><h3>天山一日｜跟团游天池与博格达雪峰</h3><div class="route-meta"><span class="tag">旅行团大巴往返</span><span class="tag">景区区间车</span><span class="tag">山地温差大</span></div><div class="timeline">
               <div class="time">按集合通知</div><div class="event"><strong>前往集合点，乘旅行团大巴前往<span class="poi-name" data-poi-key="tianchi">天山天池景区</span></strong><p>前一晚与旅行社确认集合时间、地点、车牌和导游电话，并核对团费是否包含门票、区间车、午餐及可选自费项目。</p></div>
               <div class="time">10:00前后</div><div class="event"><strong>抵达游客中心、换乘区间车</strong><p>按景区规定乘车进入核心区，旺季排队需留余量，门票、区间车和索道开放以当天公告为准。</p></div>
@@ -390,7 +409,7 @@
           </article>
 
           <article class="day">
-            <div class="day-label"><b>9月13日</b><span>乌鲁木齐返程</span></div>
+            <div class="day-label"><b>9月13日 · 周日</b><span>乌鲁木齐返程</span></div>
             <div class="day-main"><h3>乌鲁木齐飞杭州｜天津航空 GS7517</h3><div class="route-meta"><span class="tag">天津航空 GS7517 08:10 - 14:50</span><span class="tag">经停万州</span></div><div class="timeline">
               <div class="time">05:30前后</div><div class="event"><strong>退房并前往乌鲁木齐机场</strong><p>08:10起飞且有托运行李，建议06:30前抵达机场；前一晚完成行李整理并请酒店准备简便早餐。</p></div>
               <div class="time">08:10</div><div class="event"><strong>搭乘天津航空 GS7517 起飞</strong><p>航班经停万州，核对实际航站楼、值机截止时间、行李额度及经停安排。</p></div>
@@ -414,9 +433,70 @@
       </div>
     </section>
 
+    <section class="souvenirs tab-panel" id="souvenirs" role="tabpanel" aria-labelledby="tab-souvenirs" hidden>
+      <div class="wrap">
+        <div class="section-head"><div class="section-no">05 / 伴手礼</div><div><h2>把三座城的风味与手艺带回家</h2><p class="section-intro">同一种伴手礼可以在多个城市买，区别在于选择、地方风味和包装稳定性。优先挑选有配料、产地、生产日期和密封包装的食品；手工艺品先问材质与工艺，多看几家再决定。</p></div></div>
+        <div class="gift-grid">
+          <article class="gift-city" style="--city-color:#b6412f">
+            <h3>乌鲁木齐</h3>
+            <p>品类齐全，适合返程前集中补货</p>
+            <dl class="gift-list">
+              <div class="gift-item featured-gift"><dt><span class="gift-type">吃的</span>新疆干果组合</dt><dd>葡萄干、巴旦木、核桃、红枣按需散装或选小袋组合；散装先尝后买，不追求颜色过分鲜亮。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>奶疙瘩与奶制零食</dt><dd>酸甜、咸香口味差异大，先买小包装试味；选择正规密封产品，留意保质期和储存方式。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>新疆孜然牛肉干</dt><dd>正规品牌和包装选择最齐，适合返程补货或送人；想要新疆味可选孜然、辣椒或熏香口味，先买小包试吃。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>新疆蜂蜜</dt><dd>不同产区风味差异较大，认准标签上的实际产地和厂家；玻璃瓶较重，优先选密封塑料瓶并妥善托运。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>砖茶、花茶与调味料</dt><dd>玫瑰花茶、砖茶、孜然和辣椒面体积小、便于分送；选择封口完整的小包装，避免气味串入衣物。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>独立包装馕与馕饼</dt><dd>比刚出炉的散装馕更适合长途携带，购买时检查生产日期、保质期和包装是否漏气。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">用的</span>花帽与艾德莱斯绸小件</dt><dd>款式和价位选择多，适合买布包、丝巾、杯垫等轻便小件；先确认面料与是否手工制作。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">用的</span>新疆主题文创</dt><dd>博物馆文创、建筑纹样冰箱贴、明信片和小型摆件易携带，价格通常比非标手工艺品透明。</dd></div>
+            </dl>
+            <div class="gift-buy"><strong>去哪买：</strong>新疆国际大巴扎适合逛和比价；连锁超市适合买定价食品；新疆博物馆文创店适合买设计类礼物。</div>
+          </article>
+
+          <article class="gift-city" style="--city-color:#246c84">
+            <h3>喀什</h3>
+            <p>南疆果香浓，传统手工艺选择丰富</p>
+            <dl class="gift-list">
+              <div class="gift-item featured-gift"><dt><span class="gift-type">吃的</span>喀什孜然牛肉干</dt><dd>本次喀什伴手礼首选，孜然香气和新疆香料风味突出；优先试吃后选有食品生产许可证、配料表和生产日期的真空小包装。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>无花果干与桑葚干</dt><dd>喀什及周边常见，小袋装方便携带；挑干燥、无异味、不黏手的产品，回家后密封防潮。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>巴旦木与南疆干果</dt><dd>适合先尝后买，选择原味或轻调味的小袋装；确认按斤还是按公斤计价，再让商家装袋。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>杏酱与无花果酱</dt><dd>果香有南疆特色，购买前检查配料、封口和保质期；玻璃瓶用衣物包裹后托运。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>包装馕与馕饼</dt><dd>可选芝麻、玫瑰或坚果风味，适合分享；现烤馕留作路上吃，带回家则选标注保质期的密封产品。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">用的</span>花帽与艾德莱斯绸小件</dt><dd>花帽、布包、丝巾比整匹布更实用；询问是否手工制作，不以“纯手工”标签代替材质判断。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">用的</span>铜器、木器与土陶</dt><dd>茶盘、小碟、木勺等小件更好携带；铜器确认是否实心或镀色，陶器要求店家加固包装。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">用的</span>喀什古城文创</dt><dd>老城门、砖花和彩色门窗元素的冰箱贴、印章和明信片轻便好送，正规文创店通常明码标价。</dd></div>
+            </dl>
+            <div class="gift-buy"><strong>去哪买：</strong>喀什古城职人街和巴格其巷适合看工艺；中西亚国际贸易市场品类多、适合比价；合作社和正规文创店价格更清楚。</div>
+          </article>
+
+          <article class="gift-city" style="--city-color:#315c4c">
+            <h3>塔县</h3>
+            <p>以帕米尔风物和塔吉克族手艺为主</p>
+            <dl class="gift-list">
+              <div class="gift-item featured-gift"><dt><span class="gift-type">吃的</span>牦牛肉干</dt><dd>塔县最具地方辨识度的肉类伴手礼，肉味重、有嚼劲；选明确标注牦牛肉含量、厂家和生产日期的真空小包装。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>新疆孜然牛肉干</dt><dd>县城也能买到，但优势不如喀什的香料风味和乌鲁木齐的品牌选择；适合遇到好吃的小包装时少量补购。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">吃的</span>牦牛奶制零食</dt><dd>可选奶贝、奶片等常温密封产品，先确认配料与实际产地；需要冷藏的鲜奶制品不作为返程伴手礼。</dd></div>
+              <div class="gift-item featured-gift"><dt><span class="gift-type">吃的</span>杏干与高原果干</dt><dd>便携且有当地风味，选自然色、干燥无霉点的小袋装；散装购买后尽快密封。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">用的</span>塔吉克族刺绣小件</dt><dd>刺绣杯垫、零钱包、帽饰等具有辨识度，也容易装进行李；优先选择标明制作者或合作社来源的产品。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">用的</span>塔吉克族花帽与披肩</dt><dd>色彩和纹样鲜明，购买前试戴或检查尺寸、里衬与走线；旅行使用可优先选轻便耐折款。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">用的</span>羊毛袜与毡制小件</dt><dd>保暖实用，适合买杯垫、小包和袜子；询问材质比例，检查是否掉毛、异味明显或染色不牢。</dd></div>
+              <div class="gift-item"><dt><span class="gift-type">用的</span>帕米尔主题文创</dt><dd>慕士塔格峰、石头城和雄鹰元素的徽章、冰箱贴、明信片轻便耐带，适合补充小礼物。</dd></div>
+            </dl>
+            <div class="gift-buy"><strong>去哪买：</strong>塔县县城正规特产店适合买密封食品；石头城游客中心、文创店或当地合作社适合买刺绣与文创。</div>
+          </article>
+        </div>
+        <div class="gift-notes">
+          <div class="gift-note"><strong>牛肉干怎么买</strong><span>新疆香料味首选喀什，牦牛肉特色首选塔县，品牌包装与返程补货首选乌鲁木齐；三个城市都可以买。</span></div>
+          <div class="gift-note"><strong>食品怎么带</strong><span>肉制品、果酱和散装食品优先托运；液体、玻璃瓶及随身行李限制以航空公司当天规定为准。</span></div>
+          <div class="gift-note"><strong>哪些慎买</strong><span>玉石、药材、名贵地毯等难以现场判断价值；刀具还有安检和运输限制，不列为本次推荐。</span></div>
+          <div class="gift-note"><strong>怎么避免游客价</strong><span>先问单价与计价单位，确认总价后再装袋；非明码商品至少比较两三家，并保留付款凭证。</span></div>
+        </div>
+      </div>
+    </section>
+
     <section class="tab-panel" id="budget" role="tabpanel" aria-labelledby="tab-budget" hidden>
       <div class="wrap">
-        <div class="section-head"><div class="section-no">05 / 消费统计</div><div><h2>两人消费，一处汇总</h2><p class="section-intro">每日填写金额并选择付款人后，下表会自动统计10天内两个人分别支付的金额，并计算均分结算结果。</p></div></div>
+        <div class="section-head"><div class="section-no">06 / 消费统计</div><div><h2>两人消费，一处汇总</h2><p class="section-intro">每日填写金额并选择付款人后，下表会自动统计10天内两个人分别支付的金额，并计算均分结算结果。</p></div></div>
         <div class="actual-budget">
           <h3>10天实际消费统计</h3>
           <p>统计每日住宿、三餐、夜宵与其他消费；没有选择付款人的金额单独列出，避免误计到任意一人。</p>
@@ -435,7 +515,7 @@
 
     <section class="sources tab-panel" id="sources" role="tabpanel" aria-labelledby="tab-sources" hidden>
       <div class="wrap">
-        <div class="section-head"><div class="section-no">06 / 实时核验</div><div><h2>出发前，重新查一遍</h2><p class="section-intro">消费栏中的票价仅供参考，不预填、不自动计入合计。实际价格和开放时段需结合政务入口、景区官方公众号、场馆电话与交警当天通知核验。</p></div></div>
+        <div class="section-head"><div class="section-no">07 / 实时核验</div><div><h2>出发前，重新查一遍</h2><p class="section-intro">消费栏中的票价仅供参考，不预填、不自动计入合计。实际价格和开放时段需结合政务入口、景区官方公众号、场馆电话与交警当天通知核验。</p></div></div>
         <div class="source-list">
           <a href="https://www.kashi.gov.cn/" target="_blank" rel="noopener"><strong>喀什地区行政公署</strong><span>政务与公告 ↗</span></a>
           <a href="https://s.nia.gov.cn/mps/main.html" target="_blank" rel="noopener"><strong>国家移民管理局政务服务平台</strong><span>办事入口 ↗</span></a>
@@ -500,7 +580,7 @@
       tianchi: ["天山天池风景区", "新疆天山天池"]
     };
 
-    const tripDates = ["9月4日", "9月5日", "9月6日", "9月7日", "9月8日", "9月9日", "9月10日", "9月11日", "9月12日", "9月13日"];
+    const tripDates = ["9月4日 · 周五", "9月5日 · 周六", "9月6日 · 周日", "9月7日 · 周一", "9月8日 · 周二", "9月9日 · 周三", "9月10日 · 周四", "9月11日 · 周五", "9月12日 · 周六", "9月13日 · 周日"];
     const tripIsoDates = ["2026-09-04", "2026-09-05", "2026-09-06", "2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10", "2026-09-11", "2026-09-12", "2026-09-13"];
     const weatherLocations = [
       { key: "urumqi", name: "乌鲁木齐", coords: places.urumqi.coords, cmaStation: "51463", cmaName: "乌鲁木齐站" },
