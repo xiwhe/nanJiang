@@ -747,19 +747,40 @@
       const cacheKey = "nanjiang-cma-weather-forecast-v1";
       const cacheLifetime = 3 * 60 * 60 * 1000;
       let cache = {};
+      let publishedForecasts = null;
+      let synchronizationFailed = false;
       try {
         cache = JSON.parse(localStorage.getItem(cacheKey)) || {};
       } catch (error) {
         console.warn("无法读取中国气象局天气缓存", error);
       }
+      if (window.location.protocol !== "file:") {
+        try {
+          const response = await fetch("./data/cma-weather.json", { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const result = await response.json();
+          if (!result.stations || typeof result.stations !== "object") throw new Error("同步数据格式无效");
+          publishedForecasts = result.stations;
+        } catch (error) {
+          synchronizationFailed = true;
+          console.warn("中国气象局同步数据获取失败", error);
+        }
+      }
       const stations = [...new Map(weatherLocations.map(location => [location.cmaStation, location])).values()];
       const forecasts = new Map();
       await Promise.all(stations.map(async location => {
+        const published = publishedForecasts?.[location.cmaStation];
+        if (Array.isArray(published)) {
+          forecasts.set(location.cmaStation, published);
+          cache[location.cmaStation] = { fetchedAt: Date.now(), daily: published };
+          return;
+        }
         const cached = cache[location.cmaStation];
         if (cached?.fetchedAt && Date.now() - cached.fetchedAt < cacheLifetime) {
           forecasts.set(location.cmaStation, cached.daily);
           return;
         }
+        if (window.location.protocol !== "file:") return;
         try {
           const response = await fetch(`https://weather.cma.cn/api/weather/view?stationid=${location.cmaStation}`);
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -781,7 +802,10 @@
         const element = document.querySelector(`[data-weather-day="${index}"] [data-weather-source="cma"]`);
         const forecast = forecasts.get(location.cmaStation)?.find(item => item.date?.replaceAll("/", "-") === tripIsoDates[index]);
         if (!forecast) {
-          renderWeatherRow(element, `中国气象局 · ${location.cmaName}`, "该日期预报尚未发布，临近出发时自动更新", "error");
+          const detail = synchronizationFailed
+            ? "天气数据同步失败，请稍后刷新或打开中国气象局官网查询"
+            : "该日期预报尚未发布，临近出发时自动更新";
+          renderWeatherRow(element, `中国气象局 · ${location.cmaName}`, detail, "error");
           return;
         }
         const weatherText = [forecast.dayText, forecast.nightText]
