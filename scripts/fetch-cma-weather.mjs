@@ -56,15 +56,39 @@ async function fetchStation(stationId) {
   throw new Error(describeError(lastError));
 }
 
+// CMA 只发布 7 天预报，窗口逐日滑动。若每次整体替换，已过去的行程日期会永久变成“尚未发布”，
+// 因此按 date 归并：同日期用新值覆盖（越临近越准），窗口外的历史日期保留。
+// 保留窗口用于给长期运行的定时任务兜底，避免文件无限增长；30 天足以覆盖整个行程。
+const retentionDays = 30;
+
+function retentionCutoff() {
+  // date 形如 2026/09/02，为零填充格式，可直接按字典序比较。按北京时间（UTC+8）取当天日期。
+  const shifted = new Date(Date.now() + 8 * 3600000 - retentionDays * 86400000);
+  return shifted.toISOString().slice(0, 10).replaceAll("-", "/");
+}
+
+function mergeForecasts(previous, next) {
+  const cutoff = retentionCutoff();
+  const byDate = new Map();
+  for (const item of Array.isArray(previous) ? previous : []) {
+    if (item?.date && item.date >= cutoff) byDate.set(item.date, item);
+  }
+  for (const item of next) {
+    if (item?.date) byDate.set(item.date, item);
+  }
+  return [...byDate.values()].sort((left, right) => left.date.localeCompare(right.date));
+}
+
 const { generatedAt: previousGeneratedAt, stations } = await loadExisting();
 const failures = [];
 let updated = 0;
 
 for (const stationId of stationIds) {
   try {
-    stations[stationId] = await fetchStation(stationId);
+    const daily = await fetchStation(stationId);
+    stations[stationId] = mergeForecasts(stations[stationId], daily);
     updated++;
-    console.log(`已同步气象站 ${stationId}`);
+    console.log(`已同步气象站 ${stationId}（本次 ${daily.length} 天，合并后 ${stations[stationId].length} 天）`);
   } catch (error) {
     failures.push(`${stationId}: ${error.message}`);
     console.error(`气象站 ${stationId} 同步失败: ${describeError(error)}`);
