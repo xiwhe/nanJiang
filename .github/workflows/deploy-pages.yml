@@ -32,7 +32,7 @@ jobs:
 
       - name: Restore previous weather data
         continue-on-error: true
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: data/cma-weather.json
           key: cma-weather-${{ github.run_id }}
@@ -47,19 +47,19 @@ jobs:
       - name: Save weather data for next run
         if: always()
         continue-on-error: true
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: data/cma-weather.json
           key: cma-weather-${{ github.run_id }}
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: .
 
       - name: Deploy Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
