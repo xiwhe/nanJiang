@@ -942,6 +942,13 @@
       const normalizeExpense = value => typeof value === "object" && value !== null
         ? { amount: value.amount || "", payer: value.payer || "" }
         : { amount: value || "", payer: "" };
+      // input[type=number] 的 min 挡不住手动输入负数，读取时统一夹到非负数；
+      // 0 允许作为有效金额，但负数一律禁用并高亮输入框。
+      // 同时也兜住 localStorage 里已存在的历史脏数据。
+      const parseAmount = value => {
+        const amount = Number(value);
+        return Number.isFinite(amount) && amount >= 0 ? amount : 0;
+      };
       const updateSummary = () => {
         const summaryBody = document.getElementById("expense-summary-body");
         const totals = { personA: 0, personB: 0, unassigned: 0, overall: 0 };
@@ -950,7 +957,7 @@
           const dayTotals = { personA: 0, personB: 0, unassigned: 0, overall: 0 };
           categoriesForDay(index + 1).forEach(category => {
             const expense = normalizeExpense(dayExpenses[category.key]);
-            const amount = Number(expense.amount) || 0;
+            const amount = parseAmount(expense.amount);
             const payerKey = expense.payer || "unassigned";
             dayTotals[payerKey] += amount;
             dayTotals.overall += amount;
@@ -1014,7 +1021,7 @@
             const payer = expenseSection.querySelector(`[data-payer="${input.dataset.expense}"]`).value;
             return [input.dataset.expense, { amount: input.value, payer }];
           }));
-          const total = inputs.reduce((sum, input) => sum + (Number(input.value) || 0), 0);
+          const total = inputs.reduce((sum, input) => sum + parseAmount(input.value), 0);
           output.value = `¥${total.toFixed(2)}`;
           savedExpenses[day] = values;
           try {
@@ -1027,13 +1034,24 @@
 
         inputs.forEach(input => {
           input.value = normalizeExpense(savedExpenses[day]?.[input.dataset.expense]).amount;
-          input.addEventListener("input", updateTotal);
+          input.addEventListener("input", () => {
+            const isNegative = Number(input.value) < 0;
+            input.style.borderColor = isNegative ? "#d9485f" : "";
+            input.style.boxShadow = isNegative ? "0 0 0 2px rgba(217, 73, 95, 0.15)" : "";
+            if (isNegative) {
+              input.value = "";
+              input.setAttribute("aria-invalid", "true");
+              return;
+            }
+            input.removeAttribute("aria-invalid");
+            updateTotal();
+          });
         });
         payerSelects.forEach(select => {
           select.value = normalizeExpense(savedExpenses[day]?.[select.dataset.payer]).payer;
           select.addEventListener("change", updateTotal);
         });
-        const initialTotal = inputs.reduce((sum, input) => sum + (Number(input.value) || 0), 0);
+        const initialTotal = inputs.reduce((sum, input) => sum + parseAmount(input.value), 0);
         output.value = `¥${initialTotal.toFixed(2)}`;
       });
       updateSummary();
@@ -1169,7 +1187,9 @@
     async function resolveRoadPath(route, pointPath) {
       if (!route.road) return { path: pointPath, planned: false };
       const cacheKey = route.cacheKey || route.day;
-      if (Object.hasOwn(roadPathCache, cacheKey)) return roadPathCache[cacheKey];
+      // 只复用规划成功的缓存，失败结果不落盘：一次网络抖动不应让路线永久降级。
+      const cached = roadPathCache[cacheKey];
+      if (cached?.planned) return cached;
       try {
         if (pointPath[0][0] === pointPath.at(-1)[0] && pointPath[0][1] === pointPath.at(-1)[1]) {
           const outward = await drivingSearch([pointPath[0], ...pointPath.slice(1, -1)]);
@@ -1180,7 +1200,8 @@
         return saveRoadPath(cacheKey, { ...result, planned: true });
       } catch (error) {
         console.warn(`${tripDates[route.day - 1]} 使用点位示意路线`, error);
-        return saveRoadPath(cacheKey, { path: pointPath, planned: false });
+        // 仅本次会话退化成直线点位，不写入 localStorage，下次打开会重新规划。
+        return { path: pointPath, planned: false };
       }
     }
 
@@ -1329,7 +1350,6 @@
         map.addControl(new AMap.ToolBar({ position: { right: "12px", top: "12px" } }));
         infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -18) });
         for (const route of dayRoutes) await addRoute(route);
-        await updatePoiStatuses();
         createControls();
         showRoute("all");
         controls.hidden = false;
@@ -1339,6 +1359,8 @@
         } else {
           status.hidden = true;
         }
+        // 景点开放状态改为后台填充：徽章先显示“查询中”再逐个补全，不阻塞日期筛选控件。
+        updatePoiStatuses().catch(error => console.warn("景点状态查询失败，不影响地图与路线", error));
       } catch (error) {
         console.error(error);
         status.textContent = "高德地图加载失败，请检查 Key、安全密钥、服务平台类型和域名白名单。";
