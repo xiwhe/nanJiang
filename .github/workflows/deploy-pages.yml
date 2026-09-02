@@ -30,8 +30,27 @@ jobs:
         with:
           node-version: 22
 
+      - name: Restore previous weather data
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: data/cma-weather.json
+          key: cma-weather-${{ github.run_id }}
+          restore-keys: |
+            cma-weather-
+
       - name: Fetch CMA forecasts
+        continue-on-error: true
         run: node scripts/fetch-cma-weather.mjs
+
+      # 重跑同一 job 时 run_id 不变，cache/save 会因 key 已存在而失败，故一并容错。
+      - name: Save weather data for next run
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: data/cma-weather.json
+          key: cma-weather-${{ github.run_id }}
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
