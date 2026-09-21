@@ -534,6 +534,7 @@
 
   <footer><div class="wrap"><p>新疆10日游</p><p>看过雪峰，也听见王城。</p></div></footer>
   <script src="https://webapi.amap.com/loader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const places = {
       urumqi: { name: "乌鲁木齐", coords: [43.8256, 87.6168], note: "9月4日、11日至13日住宿或停留" },
@@ -901,8 +902,13 @@
       });
     }
 
-    function initializeExpenseTables() {
+    async function initializeExpenseTables() {
       const storageKey = "nanjiang-daily-expenses-v1";
+      const tripId = "nanjiang-2026";
+      const supabaseClient = window.supabase.createClient(
+        "https://thqqaqvvbinnzvzlavoo.supabase.co",
+        "sb_publishable_c5V0Z9ZtZ65aZAXhTAmYXA_fi7n17Nb"
+      );
       const payers = [
         { key: "", label: "选择付款人" },
         { key: "personA", label: "XW" },
@@ -932,6 +938,8 @@
         9: [{ key: "ticketTianchi", label: "天池门票+区间车（团费未含时）" }]
       };
       const categoriesForDay = day => [...baseCategories, ...(ticketCategories[day] || [])];
+      const expenseSections = new Map();
+      const syncTimers = new Map();
       let savedExpenses = {};
       try {
         savedExpenses = JSON.parse(localStorage.getItem(storageKey)) || {};
@@ -948,6 +956,13 @@
       const parseAmount = value => {
         const amount = Number(value);
         return Number.isFinite(amount) && amount >= 0 ? amount : 0;
+      };
+      const saveLocalExpenses = () => {
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(savedExpenses));
+        } catch (error) {
+          console.warn("无法保存本地开销记录", error);
+        }
       };
       const updateSummary = () => {
         const summaryBody = document.getElementById("expense-summary-body");
@@ -994,6 +1009,83 @@
           : "仅计算已选择付款人的消费";
       };
 
+      const updateDayTotal = day => {
+        const expenseSection = expenseSections.get(day);
+        if (!expenseSection) return;
+        const values = Object.fromEntries(expenseSection.inputs.map(input => {
+          const payer = expenseSection.payerSelects.find(select => select.dataset.payer === input.dataset.expense).value;
+          return [input.dataset.expense, { amount: input.value, payer }];
+        }));
+        const total = expenseSection.inputs.reduce((sum, input) => sum + parseAmount(input.value), 0);
+        expenseSection.output.value = `¥${total.toFixed(2)}`;
+        savedExpenses[day] = values;
+        saveLocalExpenses();
+        updateSummary();
+      };
+
+      const syncDay = async day => {
+        const expenses = savedExpenses[day] || {};
+        const rows = categoriesForDay(day).map(category => {
+          const expense = normalizeExpense(expenses[category.key]);
+          return {
+            trip_id: tripId,
+            day,
+            category: category.key,
+            amount: parseAmount(expense.amount),
+            payer: expense.payer
+          };
+        });
+        const { error } = await supabaseClient
+          .from("expenses")
+          .upsert(rows, { onConflict: "trip_id,day,category" });
+        if (error) console.warn("云端开销记录保存失败，已保留在本机", error);
+      };
+
+      const scheduleSync = day => {
+        clearTimeout(syncTimers.get(day));
+        syncTimers.set(day, window.setTimeout(() => syncDay(day), 450));
+      };
+
+      const renderExpenses = () => {
+        expenseSections.forEach((expenseSection, day) => {
+          expenseSection.inputs.forEach(input => {
+            input.value = normalizeExpense(savedExpenses[day]?.[input.dataset.expense]).amount;
+          });
+          expenseSection.payerSelects.forEach(select => {
+            select.value = normalizeExpense(savedExpenses[day]?.[select.dataset.payer]).payer;
+          });
+          updateDayTotal(day);
+        });
+      };
+
+      const loadRemoteExpenses = async () => {
+        const hasLocalExpense = Object.values(savedExpenses).some(dayExpenses =>
+          Object.values(dayExpenses).some(expense => {
+            const normalized = normalizeExpense(expense);
+            return normalized.amount !== "" || normalized.payer !== "";
+          })
+        );
+        const { data, error } = await supabaseClient
+          .from("expenses")
+          .select("day, category, amount, payer")
+          .eq("trip_id", tripId);
+        if (error) {
+          console.warn("无法读取云端开销记录，已显示本机缓存", error);
+          return;
+        }
+        if (data.length === 0 && hasLocalExpense) {
+          await Promise.all(Object.keys(savedExpenses).map(day => syncDay(Number(day))));
+          return;
+        }
+        savedExpenses = data.reduce((expenses, item) => {
+          expenses[item.day] ||= {};
+          expenses[item.day][item.category] = { amount: item.amount, payer: item.payer };
+          return expenses;
+        }, {});
+        saveLocalExpenses();
+        renderExpenses();
+      };
+
       document.querySelectorAll(".day").forEach((dayElement, index) => {
         const day = index + 1;
         const date = tripDates[index];
@@ -1016,21 +1108,7 @@
         const inputs = [...expenseSection.querySelectorAll("input")];
         const payerSelects = [...expenseSection.querySelectorAll("select")];
         const output = expenseSection.querySelector("output");
-        const updateTotal = () => {
-          const values = Object.fromEntries(inputs.map(input => {
-            const payer = expenseSection.querySelector(`[data-payer="${input.dataset.expense}"]`).value;
-            return [input.dataset.expense, { amount: input.value, payer }];
-          }));
-          const total = inputs.reduce((sum, input) => sum + parseAmount(input.value), 0);
-          output.value = `¥${total.toFixed(2)}`;
-          savedExpenses[day] = values;
-          try {
-            localStorage.setItem(storageKey, JSON.stringify(savedExpenses));
-          } catch (error) {
-            console.warn("无法保存本地开销记录", error);
-          }
-          updateSummary();
-        };
+        expenseSections.set(day, { inputs, payerSelects, output });
 
         inputs.forEach(input => {
           input.value = normalizeExpense(savedExpenses[day]?.[input.dataset.expense]).amount;
@@ -1044,17 +1122,28 @@
               return;
             }
             input.removeAttribute("aria-invalid");
-            updateTotal();
+            updateDayTotal(day);
+            scheduleSync(day);
           });
         });
         payerSelects.forEach(select => {
           select.value = normalizeExpense(savedExpenses[day]?.[select.dataset.payer]).payer;
-          select.addEventListener("change", updateTotal);
+          select.addEventListener("change", () => {
+            updateDayTotal(day);
+            scheduleSync(day);
+          });
         });
-        const initialTotal = inputs.reduce((sum, input) => sum + parseAmount(input.value), 0);
-        output.value = `¥${initialTotal.toFixed(2)}`;
+        updateDayTotal(day);
       });
-      updateSummary();
+      supabaseClient
+        .channel("nanjiang-expenses")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "expenses", filter: `trip_id=eq.${tripId}` },
+          () => loadRemoteExpenses()
+        )
+        .subscribe();
+      await loadRemoteExpenses();
     }
 
     function transformLatitude(longitude, latitude) {
