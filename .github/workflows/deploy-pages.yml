@@ -30,6 +30,9 @@ jobs:
         with:
           node-version: 22
 
+      - name: Validate trip configuration
+        run: node scripts/validate-trip-config.mjs
+
       - name: Restore previous weather data
         continue-on-error: true
         uses: actions/cache/restore@v6

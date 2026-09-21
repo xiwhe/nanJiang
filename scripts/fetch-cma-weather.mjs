@@ -1,12 +1,13 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { setDefaultResultOrder } from "node:dns";
+import tripConfig from "../data/nanjiang-trip.mjs";
 
 // GitHub 托管 runner 上 IPv6 不可出站，而 Node 18+ 默认 DNS 顺序为 verbatim（优先 AAAA），
 // 会导致 fetch 直接失败且拿不到任何 HTTP 状态码。强制优先 IPv4。
 setDefaultResultOrder("ipv4first");
 
-const stationIds = ["51463", "Y9199", "51804", "51811", "51377"];
+const stationIds = [...new Set(tripConfig.weather.locations.map(location => location.cmaStation))];
 const outputPath = resolve("data/cma-weather.json");
 const requestTimeout = 20000;
 const maxAttempts = 3;
