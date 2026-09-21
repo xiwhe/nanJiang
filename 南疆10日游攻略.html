@@ -940,6 +940,8 @@
       const categoriesForDay = day => [...baseCategories, ...(ticketCategories[day] || [])];
       const expenseSections = new Map();
       const syncTimers = new Map();
+      const syncRevisions = new Map();
+      const pendingExpenseKeys = new Set();
       let savedExpenses = {};
       try {
         savedExpenses = JSON.parse(localStorage.getItem(storageKey)) || {};
@@ -1023,27 +1025,33 @@
         updateSummary();
       };
 
-      const syncDay = async day => {
-        const expenses = savedExpenses[day] || {};
-        const rows = categoriesForDay(day).map(category => {
-          const expense = normalizeExpense(expenses[category.key]);
-          return {
-            trip_id: tripId,
-            day,
-            category: category.key,
-            amount: parseAmount(expense.amount),
-            payer: expense.payer
-          };
-        });
+      const expenseKey = (day, category) => `${day}:${category}`;
+      const syncExpense = async (day, category, revision) => {
+        const key = expenseKey(day, category);
+        const expense = normalizeExpense(savedExpenses[day]?.[category]);
         const { error } = await supabaseClient
           .from("expenses")
-          .upsert(rows, { onConflict: "trip_id,day,category" });
+          .upsert({
+            trip_id: tripId,
+            day,
+            category,
+            amount: parseAmount(expense.amount),
+            payer: expense.payer
+          }, { onConflict: "trip_id,day,category" });
         if (error) console.warn("云端开销记录保存失败，已保留在本机", error);
+        if (revision === undefined || syncRevisions.get(key) === revision) pendingExpenseKeys.delete(key);
       };
 
-      const scheduleSync = day => {
-        clearTimeout(syncTimers.get(day));
-        syncTimers.set(day, window.setTimeout(() => syncDay(day), 450));
+      const scheduleSync = (day, category) => {
+        const key = expenseKey(day, category);
+        const revision = (syncRevisions.get(key) || 0) + 1;
+        syncRevisions.set(key, revision);
+        pendingExpenseKeys.add(key);
+        clearTimeout(syncTimers.get(key));
+        syncTimers.set(key, window.setTimeout(() => {
+          syncTimers.delete(key);
+          syncExpense(day, category, revision);
+        }, 450));
       };
 
       const renderExpenses = () => {
@@ -1057,6 +1065,12 @@
           updateDayTotal(day);
         });
       };
+
+      const syncLocalExpenses = () => Promise.all(
+        Object.keys(savedExpenses).flatMap(day =>
+          categoriesForDay(Number(day)).map(category => syncExpense(Number(day), category.key))
+        )
+      );
 
       const loadRemoteExpenses = async () => {
         const hasLocalExpense = Object.values(savedExpenses).some(dayExpenses =>
@@ -1074,7 +1088,7 @@
           return;
         }
         if (data.length === 0 && hasLocalExpense) {
-          await Promise.all(Object.keys(savedExpenses).map(day => syncDay(Number(day))));
+          await syncLocalExpenses();
           return;
         }
         savedExpenses = data.reduce((expenses, item) => {
@@ -1084,6 +1098,24 @@
         }, {});
         saveLocalExpenses();
         renderExpenses();
+      };
+
+      const applyRemoteExpense = expense => {
+        if (!expense?.day || !expense.category) return;
+        const key = expenseKey(expense.day, expense.category);
+        if (pendingExpenseKeys.has(key)) return;
+        savedExpenses[expense.day] ||= {};
+        savedExpenses[expense.day][expense.category] = { amount: expense.amount, payer: expense.payer };
+        const expenseSection = expenseSections.get(expense.day);
+        if (!expenseSection) {
+          saveLocalExpenses();
+          return;
+        }
+        const input = expenseSection.inputs.find(item => item.dataset.expense === expense.category);
+        const select = expenseSection.payerSelects.find(item => item.dataset.payer === expense.category);
+        if (input) input.value = normalizeExpense(expense).amount;
+        if (select) select.value = normalizeExpense(expense).payer;
+        updateDayTotal(expense.day);
       };
 
       document.querySelectorAll(".day").forEach((dayElement, index) => {
@@ -1123,14 +1155,14 @@
             }
             input.removeAttribute("aria-invalid");
             updateDayTotal(day);
-            scheduleSync(day);
+            scheduleSync(day, input.dataset.expense);
           });
         });
         payerSelects.forEach(select => {
           select.value = normalizeExpense(savedExpenses[day]?.[select.dataset.payer]).payer;
           select.addEventListener("change", () => {
             updateDayTotal(day);
-            scheduleSync(day);
+            scheduleSync(day, select.dataset.payer);
           });
         });
         updateDayTotal(day);
@@ -1140,7 +1172,7 @@
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "expenses", filter: `trip_id=eq.${tripId}` },
-          () => loadRemoteExpenses()
+          payload => applyRemoteExpense(payload.new)
         )
         .subscribe();
       await loadRemoteExpenses();
